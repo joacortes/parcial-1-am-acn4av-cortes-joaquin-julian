@@ -1,3 +1,32 @@
 <resources>
-    <string name="app_name">CotizadorSeguros</string>
+    <string name="app_name">Cotizador Seguros</string>
+    <string name="titulo_asegurado">Datos del asegurado</string>
+    <string name="subtitulo_tipo_persona">Tipo de persona</string>
+    <string name="persona_fisica">Persona Fisica</string>
+    <string name="persona_juridica">Persona Juridica</string>
+    
+    <string name="hint_nombre">Nombre</string>
+    <string name="hint_apellido">Apellido</string>
+    <string name="hint_dni">DNI</string>
+    <string name="hint_fecha_nacimiento">Fecha de nacimiento</string>
+
+    <string name="hint_razon_social">Razon social</string>
+    <string name="hint_cuit">CUIT</string>
+    <string name="hint_nombre_fantasia">Nombre de fantasia</string>
+
+    <string name="subtitulo_contacto">Datos de contacto</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_telefono">Telefono</string>
+    <string name="hint_telefono_adicional">Telefono adicional</string>
+    <string name="btn_agregar_telefono">+ Agregar telefono</string>
+
+    <string name="subtitulo_domicilio">Domicilio</string>
+    <string name="hint_calle">Calle</string>
+    <string name="hint_numero">Numero</string>
+    <string name="hint_localidad">Localidad</string>
+
+    <string name="btn_guardar">Guardar asegurado</string>
+    <string name="error_tipo_persona">Selecciona un tipo de persona</string>
+    <string name="error_campos">Completa los campos obligatorios</string>
+    <string name="asegurado_guardado">Asegurado cargado correctamente</string>
 </resources>
