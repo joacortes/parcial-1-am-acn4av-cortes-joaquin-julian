@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding_pantalla">24dp</dimen>
+    <dimen name="margin_normal">16dp</dimen>
+    <dimen name="margin_chico">8dp</dimen>
+    <dimen name="titulo_size">28sp</dimen>
+    <dimen name="subtitulo_size">20sp</dimen>
+    <dimen name="texto_normal_size">16sp</dimen>
+</resources>
