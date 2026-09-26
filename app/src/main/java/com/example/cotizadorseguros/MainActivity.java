@@ -135,6 +135,51 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void guardarAsegurado() {
+        if (tipoPersonaSeleccionado.isEmpty()) {
+            Toast.makeText(
+                    this,
+                    R.string.error_tipo_persona,
+                    Toast.LENGTH_SHORT
+            ).show();
+            return;
+        }
+
+        if (tipoPersonaSeleccionado.equals("fisica")) {
+            String nombre = inputNombre.getText().toString().trim();
+            String apellido = inputApellido.getText().toString().trim();
+            String dni = inputDni.getText().toString().trim();
+            if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty()) {
+                Toast.makeText(this, R.string.error_campos, Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        if (tipoPersonaSeleccionado.equals("juridica")) {
+            String razonSocial = inputRazonSocial.getText().toString().trim();
+            String cuit = inputCuit.getText().toString().trim();
+            if (razonSocial.isEmpty() || cuit.isEmpty()) {
+                Toast.makeText(this, R.string.error_campos, Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        String email = inputEmail.getText().toString().trim();
+        String telefono = inputTelefono.getText().toString().trim();
+        String calle = inputCalle.getText().toString().trim();
+        String numero = inputNumero.getText().toString().trim();
+        String localidad = inputLocalidad.getText().toString().trim();
+        if (email.isEmpty() || telefono.isEmpty() || calle.isEmpty() || numero.isEmpty() || localidad.isEmpty()) {
+            Toast.makeText(this, R.string.error_campos, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Toast.makeText(
+                this,
+                R.string.asegurado_guardado,
+                Toast.LENGTH_LONG
+        ).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,7 +236,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        btnGuardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                guardarAsegurado();
+            }
+        });
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -200,4 +250,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
     }
+
+
 }
