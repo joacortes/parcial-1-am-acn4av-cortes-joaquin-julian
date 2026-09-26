@@ -1,12 +1,23 @@
 package com.example.cotizadorseguros;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+
+import android.text.InputType;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +42,64 @@ public class MainActivity extends AppCompatActivity {
     private EditText inputCuit;
     private EditText inputNombreFantasia;
 
+    private EditText crearCampo(int hintResId, int inputType) {
+        EditText campo = new EditText(this);
+        campo.setHint(hintResId);
+        campo.setInputType(inputType);
+        campo.setLayoutParams(
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+        );
+        return campo;
+    }
+
+    private void mostrarCamposPersonaFisica() {
+        contenedorDatosTipoPersona.removeAllViews();
+        inputNombre = crearCampo(
+                R.string.hint_nombre,
+                android.text.InputType.TYPE_CLASS_TEXT |
+                        android.text.InputType.TYPE_TEXT_VARIATION_PERSON_NAME
+        );
+        inputApellido = crearCampo(
+                R.string.hint_apellido,
+                android.text.InputType.TYPE_CLASS_TEXT |
+                        android.text.InputType.TYPE_TEXT_VARIATION_PERSON_NAME
+        );
+        inputDni = crearCampo(
+                R.string.hint_dni,
+                android.text.InputType.TYPE_CLASS_NUMBER
+        );
+        inputFechaNacimiento = crearCampo(
+                R.string.hint_fecha_nacimiento,
+                android.text.InputType.TYPE_CLASS_DATETIME
+        );
+        contenedorDatosTipoPersona.addView(inputNombre);
+        contenedorDatosTipoPersona.addView(inputApellido);
+        contenedorDatosTipoPersona.addView(inputDni);
+        contenedorDatosTipoPersona.addView(inputFechaNacimiento);
+    }
+
+    private void mostrarCamposPersonaJuridica() {
+        contenedorDatosTipoPersona.removeAllViews();
+        inputRazonSocial = crearCampo(
+                R.string.hint_razon_social,
+                android.text.InputType.TYPE_CLASS_TEXT
+        );
+        inputCuit = crearCampo(
+                R.string.hint_cuit,
+                android.text.InputType.TYPE_CLASS_NUMBER
+        );
+        inputNombreFantasia = crearCampo(
+                R.string.hint_nombre_fantasia,
+                android.text.InputType.TYPE_CLASS_TEXT
+        );
+        contenedorDatosTipoPersona.addView(inputRazonSocial);
+        contenedorDatosTipoPersona.addView(inputCuit);
+        contenedorDatosTipoPersona.addView(inputNombreFantasia);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +117,23 @@ public class MainActivity extends AppCompatActivity {
         inputCalle = findViewById(R.id.inputCalle);
         inputNumero = findViewById(R.id.inputNumero);
         inputLocalidad = findViewById(R.id.inputLocalidad);
+
+        btnPersonaFisica.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tipoPersonaSeleccionado = "fisica";
+                mostrarCamposPersonaFisica();
+            }
+        });
+
+        btnPersonaJuridica.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tipoPersonaSeleccionado = "juridica";
+                mostrarCamposPersonaJuridica();
+            }
+        });
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
