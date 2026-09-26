@@ -29,4 +29,8 @@
     <string name="error_tipo_persona">Selecciona un tipo de persona</string>
     <string name="error_campos">Completa los campos obligatorios</string>
     <string name="asegurado_guardado">Asegurado cargado correctamente</string>
+
+    <string name="btn_eliminar">Eliminar</string>
+
+    <string name="error_telefono">Ingresá un teléfono antes de agregarlo</string>
 </resources>
