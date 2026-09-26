@@ -14,6 +14,7 @@ import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -100,6 +101,41 @@ public class MainActivity extends AppCompatActivity {
         contenedorDatosTipoPersona.addView(inputNombreFantasia);
     }
 
+    private void mostrarTelefonosAdicionales() {
+        contenedorTelefonos.removeAllViews();
+        for (int i = 0; i < telefonosAdicionales.size(); i++) {
+            final int posicion = i;
+            LinearLayout fila = new LinearLayout(this);
+            fila.setOrientation(LinearLayout.HORIZONTAL);
+            TextView txtTelefono = new TextView(this);
+            txtTelefono.setText(telefonosAdicionales.get(i));
+            txtTelefono.setLayoutParams(
+                    new LinearLayout.LayoutParams(
+                            0,
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            1
+                    )
+            );
+
+            Button btnEliminar = new Button(this);
+            btnEliminar.setText(R.string.btn_eliminar);
+            btnEliminar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Primero cambia la memoria
+                    telefonosAdicionales.remove(posicion);
+                    // Despues actualizamos la UI
+                    mostrarTelefonosAdicionales();
+                }
+            });
+            fila.addView(txtTelefono);
+            fila.addView(btnEliminar);
+            contenedorTelefonos.addView(fila);
+
+        }
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,6 +169,29 @@ public class MainActivity extends AppCompatActivity {
                 mostrarCamposPersonaJuridica();
             }
         });
+
+        btnAgregarTelefono.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String telefono = inputTelefono.getText().toString().trim();
+                if (telefono.isEmpty()) {
+                    Toast.makeText(
+                            MainActivity.this,
+                            R.string.error_telefono,
+                            Toast.LENGTH_SHORT
+                    ).show();
+                    return;
+                }
+                // 1) CAMBIO EN MEMORIA
+                telefonosAdicionales.add(telefono);
+                // 2) Limpiamos el campo de entrada
+                inputTelefono.setText("");
+                // 3) Reflejamos el estado de memoria en la pantalla
+                mostrarTelefonosAdicionales();
+            }
+        });
+
+
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
