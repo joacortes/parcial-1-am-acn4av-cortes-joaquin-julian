@@ -6,4 +6,5 @@
     <dimen name="titulo_size">28sp</dimen>
     <dimen name="subtitulo_size">20sp</dimen>
     <dimen name="texto_normal_size">16sp</dimen>
+    <dimen name="altura_minima_input">48dp</dimen>
 </resources>
