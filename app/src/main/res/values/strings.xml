@@ -4,7 +4,7 @@
     <string name="subtitulo_tipo_persona">Tipo de persona</string>
     <string name="persona_fisica">Persona Fisica</string>
     <string name="persona_juridica">Persona Juridica</string>
-    
+
     <string name="hint_nombre">Nombre</string>
     <string name="hint_apellido">Apellido</string>
     <string name="hint_dni">DNI</string>
