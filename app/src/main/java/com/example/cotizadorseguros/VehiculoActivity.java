@@ -95,21 +95,11 @@ public class VehiculoActivity extends AppCompatActivity {
     }
 
     public void continuarVehiculo(View view) {
-
-        String patente =
-                inputPatente.getText().toString().trim();
-
-        String marca =
-                inputMarca.getText().toString().trim();
-
-        String modelo =
-                inputModelo.getText().toString().trim();
-
-        String anio =
-                inputAnio.getText().toString().trim();
-
-        String uso =
-                inputUso.getText().toString().trim();
+        String patente = inputPatente.getText().toString().trim();
+        String marca = inputMarca.getText().toString().trim();
+        String modelo = inputModelo.getText().toString().trim();
+        String anio = inputAnio.getText().toString().trim();
+        String uso = inputUso.getText().toString().trim();
 
         if (patente.isEmpty()
                 || marca.isEmpty()

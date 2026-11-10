@@ -12,17 +12,45 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class ResumenActivity extends AppCompatActivity {
     private TextView txtResumenAsegurado;
     private TextView txtResumenVehiculo;
     private TextView txtResumenCobertura;
     private TextView txtResumenPrecio;
+    private FirebaseFirestore db;
+    private String tipoPersona;
+
+    private String nombre;
+    private String apellido;
+    private String dni;
+
+    private String razonSocial;
+    private String cuit;
+    private String nombreFantasia;
+
+    private String patente;
+    private String marca;
+    private String modelo;
+    private String anio;
+    private String uso;
+
+    private String cobertura;
+    private double precio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_resumen);
+
+        db = FirebaseFirestore.getInstance();
 
         txtResumenAsegurado = findViewById(R.id.txtResumenAsegurado);
         txtResumenVehiculo = findViewById(R.id.txtResumenVehiculo);
@@ -31,33 +59,29 @@ public class ResumenActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        String tipoPersona = intent.getStringExtra("tipoPersona");
+        tipoPersona = intent.getStringExtra("tipoPersona");
 
         if ("fisica".equals(tipoPersona)) {
-
-            String nombre = intent.getStringExtra("nombre");
-            String apellido = intent.getStringExtra("apellido");
-            String dni = intent.getStringExtra("dni");
-
-            txtResumenAsegurado.setText(getString(R.string.resumen_persona_fisica, nombre, apellido, dni));
+            nombre = intent.getStringExtra("nombre");
+            apellido = intent.getStringExtra("apellido");
+            dni = intent.getStringExtra("dni");
         }
 
         if ("juridica".equals(tipoPersona)) {
-
-            String razonSocial = intent.getStringExtra("razonSocial");
-            String cuit = intent.getStringExtra("cuit");
-            String nombreFantasia = intent.getStringExtra("nombreFantasia");
-
-            txtResumenAsegurado.setText(getString(R.string.resumen_persona_juridica, razonSocial, cuit, nombreFantasia));
+            razonSocial = intent.getStringExtra("razonSocial");
+            cuit = intent.getStringExtra("cuit");
+            nombreFantasia = intent.getStringExtra("nombreFantasia");
         }
 
-        String patente = intent.getStringExtra("patente");
-        String marca = intent.getStringExtra("marca");
-        String modelo = intent.getStringExtra("modelo");
-        String anio = intent.getStringExtra("anio");
+        tipoPersona = intent.getStringExtra("tipoPersona");
+        patente = intent.getStringExtra("patente");
+        marca = intent.getStringExtra("marca");
+        modelo = intent.getStringExtra("modelo");
+        anio = intent.getStringExtra("anio");
+        uso = intent.getStringExtra("uso");
 
-        String uso = intent.getStringExtra("uso");
-        String cobertura = intent.getStringExtra("cobertura");
+        cobertura = intent.getStringExtra("cobertura");
+        precio = intent.getDoubleExtra("precio", 0);
 
         double precio = intent.getDoubleExtra("precio", 0);
 
@@ -78,10 +102,40 @@ public class ResumenActivity extends AppCompatActivity {
 
     public void guardarCotizacion(View view) {
 
-        Toast.makeText(
-                this,
-                "Cotización guardada correctamente",
-                Toast.LENGTH_LONG
-        ).show();
+        Map<String, Object> cotizacion = new HashMap<>();
+        cotizacion.put("tipoPersona", tipoPersona);
+
+        if ("fisica".equals(tipoPersona)) {
+            cotizacion.put("nombre", nombre);
+            cotizacion.put("apellido", apellido);
+            cotizacion.put("dni", dni);
+        }
+
+        if ("juridica".equals(tipoPersona)) {
+            cotizacion.put("razonSocial", razonSocial);
+            cotizacion.put("cuit", cuit);
+            cotizacion.put("nombreFantasia", nombreFantasia);
+        }
+
+        cotizacion.put("patente", patente);
+        cotizacion.put("marca", marca);
+        cotizacion.put("modelo", modelo);
+        cotizacion.put("anio", anio);
+        cotizacion.put("uso", uso);
+
+        cotizacion.put("cobertura", cobertura);
+        cotizacion.put("precio", precio);
+
+        FirebaseUser usuarioActual = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (usuarioActual != null) {
+            cotizacion.put("usuario", usuarioActual.getEmail());
+        }
+
+        db.collection("cotizaciones").add(cotizacion).addOnSuccessListener(documentReference -> {
+                    Toast.makeText(this, "Cotización guardada correctamente", Toast.LENGTH_LONG).show();
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error al guardar la cotización", Toast.LENGTH_LONG).show();
+                });
     }
 }
