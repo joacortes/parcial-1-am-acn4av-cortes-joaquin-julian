@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 public class CoberturaActivity extends AppCompatActivity {
 
@@ -46,6 +49,12 @@ public class CoberturaActivity extends AppCompatActivity {
 
         txtDatosVehiculo = findViewById(R.id.txtDatosVehiculo);
         txtCoberturaSeleccionada = findViewById(R.id.txtCoberturaSeleccionada);
+
+        ImageView imgVehiculo = findViewById(R.id.imgVehiculo);
+
+        String urlImagen = "https://cdn-icons-png.flaticon.com/512/2237/2237750.png";
+
+        Glide.with(this).load(urlImagen).into(imgVehiculo);
 
         Intent intent = getIntent();
 

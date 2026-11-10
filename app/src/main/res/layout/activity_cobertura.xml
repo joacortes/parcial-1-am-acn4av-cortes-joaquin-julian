@@ -42,6 +42,15 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="24dp" />
 
+            <ImageView
+                android:id="@+id/imgVehiculo"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="Imagen del vehículo"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true" />
+
             <Button
                 android:id="@+id/btnRc"
                 android:layout_width="match_parent"
