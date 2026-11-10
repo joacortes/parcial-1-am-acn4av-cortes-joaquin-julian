@@ -43,12 +43,22 @@
             android:onClick="nuevaCotizacion" />
 
         <Button
+            android:id="@+id/btnConsultarCotizaciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Consultar cotizaciones"
+            android:layout_marginTop="12dp"
+            android:onClick="consultarCotizaciones" />
+
+        <Button
             android:id="@+id/btnCerrarSesion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cerrar sesión"
             android:layout_marginTop="12dp"
             android:onClick="cerrarSesion" />
+
+
 
     </LinearLayout>
 

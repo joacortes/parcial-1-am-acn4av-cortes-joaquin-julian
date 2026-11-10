@@ -58,4 +58,14 @@ public class InicioActivity extends AppCompatActivity {
 
         finish();
     }
+
+    public void consultarCotizaciones(View view) {
+
+        Intent intent = new Intent(
+                InicioActivity.this,
+                ConsultaCotizacionesActivity.class
+        );
+
+        startActivity(intent);
+    }
 }
