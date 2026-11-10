@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CoberturaActivity">
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/txtTituloCobertura"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Selección de Cobertura"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/txtDatosVehiculo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Vehículo"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp" />
+
+            <Button
+                android:id="@+id/btnRc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Responsabilidad Civil - $45.000"
+                android:onClick="seleccionarResponsabilidadCivil" />
+
+            <Button
+                android:id="@+id/btnTercerosCompleto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Terceros Completo - $72.500"
+                android:layout_marginTop="12dp"
+                android:onClick="seleccionarTercerosCompleto" />
+
+            <Button
+                android:id="@+id/btnTodoRiesgo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Todo Riesgo - $118.900"
+                android:layout_marginTop="12dp"
+                android:onClick="seleccionarTodoRiesgo" />
+
+            <TextView
+                android:id="@+id/txtCoberturaSeleccionada"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cobertura seleccionada: ninguna"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

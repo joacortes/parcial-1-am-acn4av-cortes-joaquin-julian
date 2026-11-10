@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".VehiculoActivity">
+
+    <ScrollView
+        android:id="@+id/scrollVehiculo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:id="@+id/contenedorVehiculo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/txtTituloVehiculo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Datos del Vehículo"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:id="@+id/txtAsegurado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Asegurado"
+                android:textSize="16sp"
+                android:layout_marginBottom="24dp" />
+
+            <EditText
+                android:id="@+id/inputPatente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:hint="Patente"
+                android:inputType="textCapCharacters" />
+
+            <EditText
+                android:id="@+id/inputMarca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:hint="Marca"
+                android:inputType="textCapWords"
+                android:layout_marginTop="12dp" />
+
+            <EditText
+                android:id="@+id/inputModelo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:hint="Modelo"
+                android:inputType="textCapWords"
+                android:layout_marginTop="12dp" />
+
+            <EditText
+                android:id="@+id/inputAnio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:hint="Año"
+                android:inputType="number"
+                android:layout_marginTop="12dp" />
+
+            <EditText
+                android:id="@+id/inputUso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:hint="Uso del vehículo"
+                android:inputType="textCapWords"
+                android:layout_marginTop="12dp" />
+
+            <Button
+                android:id="@+id/btnContinuarVehiculo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Continuar"
+                android:layout_marginTop="24dp"
+                android:onClick="continuarVehiculo" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

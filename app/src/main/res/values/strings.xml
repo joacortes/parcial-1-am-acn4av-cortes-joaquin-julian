@@ -33,4 +33,5 @@
     <string name="btn_eliminar">Eliminar</string>
 
     <string name="error_telefono">Ingresá un teléfono antes de agregarlo</string>
+    <string name="btn_continuar">Continuar</string>
 </resources>
