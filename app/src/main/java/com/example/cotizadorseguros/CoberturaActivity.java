@@ -135,4 +135,40 @@ public class CoberturaActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT
         ).show();
     }
+
+    public void continuarCobertura(View view) {
+        if (coberturaSeleccionada.isEmpty()) {
+            Toast.makeText(this, "Seleccioná una cobertura", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent intent = new Intent(CoberturaActivity.this, ResumenActivity.class);
+
+        intent.putExtra("tipoPersona", tipoPersona);
+
+        if ("fisica".equals(tipoPersona)) {
+
+            intent.putExtra("nombre", nombre);
+            intent.putExtra("apellido", apellido);
+            intent.putExtra("dni", dni);
+        }
+
+        if ("juridica".equals(tipoPersona)) {
+
+            intent.putExtra("razonSocial", razonSocial);
+            intent.putExtra("cuit", cuit);
+            intent.putExtra("nombreFantasia", nombreFantasia);
+        }
+
+        intent.putExtra("patente", patente);
+        intent.putExtra("marca", marca);
+        intent.putExtra("modelo", modelo);
+        intent.putExtra("anio", anio);
+        intent.putExtra("uso", uso);
+
+        intent.putExtra("cobertura", coberturaSeleccionada);
+
+        intent.putExtra("precio", precioSeleccionado);
+        startActivity(intent);
+    }
 }
