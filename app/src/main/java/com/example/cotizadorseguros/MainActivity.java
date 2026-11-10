@@ -273,7 +273,6 @@ public class MainActivity extends AppCompatActivity {
         String localidad = inputLocalidad.getText().toString().trim();
 
         if (email.isEmpty()
-                || telefono.isEmpty()
                 || calle.isEmpty()
                 || numero.isEmpty()
                 || localidad.isEmpty()) {
@@ -281,6 +280,17 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(
                     this,
                     R.string.error_campos,
+                    Toast.LENGTH_SHORT
+            ).show();
+
+            return;
+        }
+
+        if (telefono.isEmpty() && telefonosAdicionales.isEmpty()) {
+
+            Toast.makeText(
+                    this,
+                    R.string.error_telefono,
                     Toast.LENGTH_SHORT
             ).show();
 
