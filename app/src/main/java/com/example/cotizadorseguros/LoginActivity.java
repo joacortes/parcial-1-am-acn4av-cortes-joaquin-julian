@@ -44,6 +44,10 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(this, "Inicio de sesión correcto", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, InicioActivity.class);
+                startActivity(intent);
+
+                finish();
             } else {
                 Toast.makeText(this, "Email o contraseña incorrectos", Toast.LENGTH_SHORT).show();
             }
