@@ -52,6 +52,14 @@
                 android:hint="Patente"
                 android:inputType="textCapCharacters" />
 
+            <TextView
+                android:id="@+id/txtMarcasApi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cargando marcas..."
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="12dp" />
+
             <EditText
                 android:id="@+id/inputMarca"
                 android:layout_width="match_parent"

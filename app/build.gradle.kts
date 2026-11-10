@@ -44,4 +44,6 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.github.bumptech.glide:glide:5.0.9")
+    implementation("com.squareup.okhttp3:okhttp:5.4.0")
+    implementation("com.google.code.gson:gson:2.15.0")
 }
