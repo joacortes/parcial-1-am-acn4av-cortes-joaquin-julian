@@ -34,4 +34,12 @@
 
     <string name="error_telefono">Ingresá un teléfono antes de agregarlo</string>
     <string name="btn_continuar">Continuar</string>
+
+    <string name="resumen_persona_fisica">%1$s %2$s\nDNI: %3$s</string>
+
+    <string name="resumen_persona_juridica">%1$s\nCUIT: %2$s\nNombre de fantasía: %3$s</string>
+
+    <string name="resumen_vehiculo">%1$s %2$s\nAño: %3$s\nPatente: %4$s\nUso: %5$s</string>
+
+    <string name="resumen_precio">$%1$.0f</string>
 </resources>

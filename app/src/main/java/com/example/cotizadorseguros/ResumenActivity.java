@@ -37,7 +37,7 @@ public class ResumenActivity extends AppCompatActivity {
             String apellido = intent.getStringExtra("apellido");
             String dni = intent.getStringExtra("dni");
 
-            txtResumenAsegurado.setText(nombre + " " + apellido + "\nDNI: " + dni);
+            txtResumenAsegurado.setText(getString(R.string.resumen_persona_fisica, nombre, apellido, dni));
         }
 
         if ("juridica".equals(tipoPersona)) {
@@ -46,11 +46,7 @@ public class ResumenActivity extends AppCompatActivity {
             String cuit = intent.getStringExtra("cuit");
             String nombreFantasia = intent.getStringExtra("nombreFantasia");
 
-            txtResumenAsegurado.setText(razonSocial
-                    + "\nCUIT: " + cuit
-                    + "\nNombre de fantasía: "
-                    + nombreFantasia
-            );
+            txtResumenAsegurado.setText(getString(R.string.resumen_persona_juridica, razonSocial, cuit, nombreFantasia));
         }
 
         String patente = intent.getStringExtra("patente");
@@ -63,15 +59,10 @@ public class ResumenActivity extends AppCompatActivity {
 
         double precio = intent.getDoubleExtra("precio", 0);
 
-        txtResumenVehiculo.setText(
-                marca + " " + modelo
-                        + "\nAño: " + anio
-                        + "\nPatente: " + patente
-                        + "\nUso: " + uso
-        );
+        txtResumenVehiculo.setText(getString(R.string.resumen_vehiculo, marca, modelo, anio, patente, uso));
 
         txtResumenCobertura.setText(cobertura);
-        txtResumenPrecio.setText("$" + precio);
+        txtResumenPrecio.setText(getString(R.string.resumen_precio, precio));
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main),
                 (v, insets) -> {
