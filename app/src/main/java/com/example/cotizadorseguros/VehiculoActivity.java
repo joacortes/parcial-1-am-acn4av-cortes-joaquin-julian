@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -24,12 +26,18 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 
 public class VehiculoActivity extends AppCompatActivity {
+    private Spinner spinnerMarca;
+    private Spinner spinnerModelo;
+
+    private ArrayList<MarcaVehiculo> listaMarcas = new ArrayList<>();
+    private ArrayList<String> nombresMarcas = new ArrayList<>();
+    private ArrayList<String> nombresModelos = new ArrayList<>();
     private EditText inputUso;
     private EditText inputPatente;
-    private EditText inputMarca;
-    private EditText inputModelo;
     private EditText inputAnio;
 
     private String tipoPersona;
@@ -41,7 +49,7 @@ public class VehiculoActivity extends AppCompatActivity {
     private String razonSocial;
     private String cuit;
     private String nombreFantasia;
-    private TextView txtMarcasApi;
+
     private OkHttpClient clienteHttp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +59,35 @@ public class VehiculoActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_vehiculo);
 
-        txtMarcasApi = findViewById(R.id.txtMarcasApi);
+        spinnerMarca = findViewById(R.id.spinnerMarca);
+        spinnerModelo = findViewById(R.id.spinnerModelo);
+
+        spinnerMarca.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        if (listaMarcas.isEmpty()) {
+                            return;
+                        }
+                        String nombreMarca = listaMarcas.get(position).getMakeName();
+                        cargarModelosDesdeApi(nombreMarca);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                }
+        );
+
+
 
         clienteHttp = new OkHttpClient();
 
         cargarMarcasDesdeApi();
 
         inputPatente = findViewById(R.id.inputPatente);
-        inputMarca = findViewById(R.id.inputMarca);
-        inputModelo = findViewById(R.id.inputModelo);
+
         inputAnio = findViewById(R.id.inputAnio);
         inputUso = findViewById(R.id.inputUso);
 
@@ -109,6 +137,38 @@ public class VehiculoActivity extends AppCompatActivity {
 
     }
 
+    private void cargarModelosDesdeApi(String marca) {
+        String url = "https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMake/" + marca + "?format=json";
+        Request request = new Request.Builder().url(url).build();
+        clienteHttp.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    runOnUiThread(() -> Toast.makeText(VehiculoActivity.this, "No se pudieron cargar los modelos", Toast.LENGTH_SHORT).show());
+                }
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (!response.isSuccessful()) {
+                        return;
+                    }
+                    String json = response.body().string();
+                    Gson gson = new Gson();
+
+                    RespuestaModelos respuesta = gson.fromJson(json, RespuestaModelos.class);
+
+                    nombresModelos.clear();
+                    for(ModeloVehiculo modelo : respuesta.getResults()) {
+                        nombresModelos.add(modelo.getModelName());
+                    }
+
+                    runOnUiThread(() -> {
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(VehiculoActivity.this, android.R.layout.simple_spinner_item, nombresModelos);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinnerModelo.setAdapter(adapter);
+                    });
+                }
+        });
+    }
+
     private void cargarMarcasDesdeApi() {
 
         String url = "https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json";
@@ -119,7 +179,6 @@ public class VehiculoActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         runOnUiThread(() -> {
-                            txtMarcasApi.setText("Error: " + e.getMessage());
                             Log.e("API_MARCAS", "Error al consultar API", e);
                         });
                     }
@@ -127,64 +186,59 @@ public class VehiculoActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         if (!response.isSuccessful()) {
-
-                            runOnUiThread(() -> {
-                                txtMarcasApi.setText("Error al consultar la API");
-                            });
-
                             return;
                         }
 
                         String json = response.body().string();
-
                         Gson gson = new Gson();
 
                         RespuestaMarcas respuesta = gson.fromJson(json, RespuestaMarcas.class);
 
-                        List<MarcaVehiculo> marcas = respuesta.getResults();
+                        listaMarcas.clear();
+                        listaMarcas.addAll(respuesta.getResults());
 
-                        StringBuilder texto = new StringBuilder();
+                        nombresMarcas.clear();
 
-                        int cantidad = Math.min(10, marcas.size());
-
-                        for (int i = 0; i < cantidad; i++) {
-                            texto.append(marcas.get(i).getMakeName());
-                            texto.append("\n");
+                        for (MarcaVehiculo marca : listaMarcas) {
+                            nombresMarcas.add(marca.getMakeName());
                         }
 
                         runOnUiThread(() -> {
-                            txtMarcasApi.setText(texto.toString());
+                            ArrayAdapter<String> adapter = new ArrayAdapter<>(VehiculoActivity.this, android.R.layout.simple_spinner_item, nombresMarcas);
+
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinnerMarca.setAdapter(adapter);
                         });
                     }
                 });
     }
 
     public void continuarVehiculo(View view) {
-        String patente = inputPatente.getText().toString().trim();
-        String marca = inputMarca.getText().toString().trim();
-        String modelo = inputModelo.getText().toString().trim();
-        String anio = inputAnio.getText().toString().trim();
-        String uso = inputUso.getText().toString().trim();
 
-        if (patente.isEmpty()
-                || marca.isEmpty()
-                || modelo.isEmpty()
-                || anio.isEmpty()
-                || uso.isEmpty()) {
+        if (spinnerMarca.getSelectedItem() == null
+                || spinnerModelo.getSelectedItem() == null) {
 
             Toast.makeText(
                     this,
-                    "Completá todos los datos del vehículo",
+                    "Seleccioná una marca y un modelo",
                     Toast.LENGTH_SHORT
             ).show();
 
             return;
         }
 
-        Intent intent = new Intent(
-                VehiculoActivity.this,
-                CoberturaActivity.class
-        );
+        String patente = inputPatente.getText().toString().trim();
+        String marca = spinnerMarca.getSelectedItem().toString();
+        String modelo = spinnerModelo.getSelectedItem().toString();
+        String anio = inputAnio.getText().toString().trim();
+        String uso = inputUso.getText().toString().trim();
+
+        if (patente.isEmpty() || marca.isEmpty() || modelo.isEmpty() || anio.isEmpty() || uso.isEmpty()) {
+            Toast.makeText(this, "Completá todos los datos del vehículo", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent intent = new Intent(VehiculoActivity.this, CoberturaActivity.class);
 
         intent.putExtra("tipoPersona", tipoPersona);
 

@@ -53,30 +53,28 @@
                 android:inputType="textCapCharacters" />
 
             <TextView
-                android:id="@+id/txtMarcasApi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cargando marcas..."
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="12dp" />
+                android:text="Marca"
+                android:layout_marginTop="16dp" />
 
-            <EditText
-                android:id="@+id/inputMarca"
+            <Spinner
+                android:id="@+id/spinnerMarca"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:hint="Marca"
-                android:inputType="textCapWords"
-                android:layout_marginTop="12dp" />
+                android:minHeight="48dp" />
 
-            <EditText
-                android:id="@+id/inputModelo"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:hint="Modelo"
-                android:inputType="textCapWords"
-                android:layout_marginTop="12dp" />
+                android:text="Modelo"
+                android:layout_marginTop="16dp" />
+
+            <Spinner
+                android:id="@+id/spinnerModelo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp" />
 
             <EditText
                 android:id="@+id/inputAnio"
