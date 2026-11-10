@@ -2,7 +2,9 @@ package com.example.cotizadorseguros;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -72,5 +74,14 @@ public class ResumenActivity extends AppCompatActivity {
                     return insets;
                 }
         );
+    }
+
+    public void guardarCotizacion(View view) {
+
+        Toast.makeText(
+                this,
+                "Cotización guardada correctamente",
+                Toast.LENGTH_LONG
+        ).show();
     }
 }
