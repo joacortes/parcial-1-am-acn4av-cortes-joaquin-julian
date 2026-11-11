@@ -33,10 +33,7 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
 
     private void cargarCotizaciones() {
 
-        db.collection("cotizaciones")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-
+        db.collection("cotizaciones").get().addOnSuccessListener(queryDocumentSnapshots -> {
                     for (QueryDocumentSnapshot documento : queryDocumentSnapshots) {
 
                         String tipoPersona = documento.getString("tipoPersona");
@@ -86,12 +83,7 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(e -> {
-
-                    Toast.makeText(
-                            this,
-                            "Error al cargar cotizaciones",
-                            Toast.LENGTH_SHORT
-                    ).show();
+                    Toast.makeText(this, "Error al cargar cotizaciones", Toast.LENGTH_SHORT).show();
                 });
     }
 }

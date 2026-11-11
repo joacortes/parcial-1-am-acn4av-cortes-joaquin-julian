@@ -47,10 +47,18 @@ public class ResumenActivity extends AppCompatActivity {
 
     private TextView txtResumenSumaAsegurada;
     private TextView txtResumenPrima;
+    private TextView txtResumenPrimaBase;
+    private TextView txtResumenDescuento;
+    private TextView txtResumenRecargo;
+    private TextView txtResumenComision;
 
     private double sumaAsegurada;
     private double prima;
-
+    private double primaBase;
+    private double descuento;
+    private double recargo;
+    private double porcentajeComision;
+    private double comision;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,8 +73,17 @@ public class ResumenActivity extends AppCompatActivity {
 
         txtResumenSumaAsegurada = findViewById(R.id.txtResumenSumaAsegurada);
         txtResumenPrima = findViewById(R.id.txtResumenPrima);
+        txtResumenPrimaBase = findViewById(R.id.txtResumenPrimaBase);
+        txtResumenDescuento = findViewById(R.id.txtResumenDescuento);
+        txtResumenRecargo = findViewById(R.id.txtResumenRecargo);
+        txtResumenComision = findViewById(R.id.txtResumenComision);
 
         Intent intent = getIntent();
+        primaBase = intent.getDoubleExtra("primaBase", 0);
+        descuento = intent.getDoubleExtra("descuento", 0);
+        recargo = intent.getDoubleExtra("recargo", 0);
+        porcentajeComision = intent.getDoubleExtra("porcentajeComision", 0);
+        comision = intent.getDoubleExtra("comision", 0);
         sumaAsegurada = intent.getDoubleExtra("sumaAsegurada", 0);
         prima = intent.getDoubleExtra("prima", 0);
 
@@ -84,7 +101,7 @@ public class ResumenActivity extends AppCompatActivity {
             nombreFantasia = intent.getStringExtra("nombreFantasia");
         }
 
-        tipoPersona = intent.getStringExtra("tipoPersona");
+
         patente = intent.getStringExtra("patente");
         marca = intent.getStringExtra("marca");
         modelo = intent.getStringExtra("modelo");
@@ -99,6 +116,11 @@ public class ResumenActivity extends AppCompatActivity {
         txtResumenCobertura.setText(cobertura);
         txtResumenSumaAsegurada.setText(formatoMoneda.format(sumaAsegurada));
         txtResumenPrima.setText(formatoMoneda.format(prima));
+        txtResumenPrimaBase.setText("Prima base: " + formatoMoneda.format(primaBase));
+        txtResumenDescuento.setText("Descuento: " + descuento + "%");
+        txtResumenRecargo.setText("Recargo: " + recargo + "%");
+        txtResumenComision.setText("Comisión productor: " + porcentajeComision + "% - " + formatoMoneda.format(comision));
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main),
                 (v, insets) -> {
@@ -136,6 +158,11 @@ public class ResumenActivity extends AppCompatActivity {
         cotizacion.put("cobertura", cobertura);
         cotizacion.put("sumaAsegurada", sumaAsegurada);
         cotizacion.put("prima", prima);
+        cotizacion.put("primaBase", primaBase);
+        cotizacion.put("descuento", descuento);
+        cotizacion.put("recargo", recargo);
+        cotizacion.put("porcentajeComision", porcentajeComision);
+        cotizacion.put("comision", comision);
 
         FirebaseUser usuarioActual = FirebaseAuth.getInstance().getCurrentUser();
 

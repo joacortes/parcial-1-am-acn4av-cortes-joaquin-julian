@@ -105,6 +105,25 @@
                 android:textStyle="bold"
                 android:layout_marginTop="8dp" />
 
+            <TextView
+                android:id="@+id/txtResumenPrimaBase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtResumenDescuento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtResumenRecargo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtResumenComision"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/btnGuardarCotizacion"
