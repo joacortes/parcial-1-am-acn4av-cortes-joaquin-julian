@@ -39,6 +39,7 @@ public class VehiculoActivity extends AppCompatActivity {
     private EditText inputUso;
     private EditText inputPatente;
     private EditText inputAnio;
+    private EditText inputSumaAsegurada;
 
     private String tipoPersona;
 
@@ -51,6 +52,7 @@ public class VehiculoActivity extends AppCompatActivity {
     private String nombreFantasia;
 
     private OkHttpClient clienteHttp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,7 @@ public class VehiculoActivity extends AppCompatActivity {
 
         spinnerMarca = findViewById(R.id.spinnerMarca);
         spinnerModelo = findViewById(R.id.spinnerModelo);
+        inputSumaAsegurada = findViewById(R.id.inputSumaAsegurada);
 
         spinnerMarca.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
@@ -232,11 +235,14 @@ public class VehiculoActivity extends AppCompatActivity {
         String modelo = spinnerModelo.getSelectedItem().toString();
         String anio = inputAnio.getText().toString().trim();
         String uso = inputUso.getText().toString().trim();
+        String sumaAseguradaTexto = inputSumaAsegurada.getText().toString().trim();
 
-        if (patente.isEmpty() || marca.isEmpty() || modelo.isEmpty() || anio.isEmpty() || uso.isEmpty()) {
+        if (patente.isEmpty() || marca.isEmpty() || modelo.isEmpty() || anio.isEmpty() || uso.isEmpty() || sumaAseguradaTexto.isEmpty()) {
             Toast.makeText(this, "Completá todos los datos del vehículo", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        double sumaAsegurada = Double.parseDouble(sumaAseguradaTexto);
 
         Intent intent = new Intent(VehiculoActivity.this, CoberturaActivity.class);
 
@@ -261,6 +267,7 @@ public class VehiculoActivity extends AppCompatActivity {
         intent.putExtra("modelo", modelo);
         intent.putExtra("anio", anio);
         intent.putExtra("uso", uso);
+        intent.putExtra("sumaAsegurada", sumaAsegurada);
 
         startActivity(intent);
     }

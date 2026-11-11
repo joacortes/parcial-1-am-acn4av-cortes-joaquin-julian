@@ -86,6 +86,15 @@
                 android:layout_marginTop="12dp" />
 
             <EditText
+                android:id="@+id/inputSumaAsegurada"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:hint="Suma asegurada"
+                android:inputType="numberDecimal"
+                android:layout_marginTop="12dp" />
+
+            <EditText
                 android:id="@+id/inputUso"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
