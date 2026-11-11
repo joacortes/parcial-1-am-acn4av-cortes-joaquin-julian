@@ -42,4 +42,7 @@
     <string name="resumen_vehiculo">%1$s %2$s\nAño: %3$s\nPatente: %4$s\nUso: %5$s</string>
 
     <string name="resumen_precio">$%1$.0f</string>
+    <string name="responsabilidad_civil">Responsabilidad Civil</string>
+    <string name="terceros_completo">Terceros Completo</string>
+    <string name="todo_riesgo">Todo Riesgo</string>
 </resources>

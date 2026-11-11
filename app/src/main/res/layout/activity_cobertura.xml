@@ -55,14 +55,14 @@
                 android:id="@+id/btnRc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Responsabilidad Civil - $45.000"
+                android:text="@string/responsabilidad_civil"
                 android:onClick="seleccionarResponsabilidadCivil" />
 
             <Button
                 android:id="@+id/btnTercerosCompleto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Terceros Completo - $72.500"
+                android:text="@string/terceros_completo"
                 android:layout_marginTop="12dp"
                 android:onClick="seleccionarTercerosCompleto" />
 
@@ -70,7 +70,7 @@
                 android:id="@+id/btnTodoRiesgo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Todo Riesgo - $118.900"
+                android:text="@string/todo_riesgo"
                 android:layout_marginTop="12dp"
                 android:onClick="seleccionarTodoRiesgo" />
 
