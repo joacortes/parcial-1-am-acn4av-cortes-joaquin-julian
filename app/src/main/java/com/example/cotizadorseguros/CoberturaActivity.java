@@ -38,6 +38,8 @@ public class CoberturaActivity extends AppCompatActivity {
 
     private String coberturaSeleccionada = "";
     private double precioSeleccionado = 0;
+    private double sumaAsegurada;
+    private double primaCalculada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,8 @@ public class CoberturaActivity extends AppCompatActivity {
         Glide.with(this).load(urlImagen).into(imgVehiculo);
 
         Intent intent = getIntent();
+
+        sumaAsegurada = intent.getDoubleExtra("sumaAsegurada", 0);
 
         tipoPersona = intent.getStringExtra("tipoPersona");
 
@@ -108,7 +112,10 @@ public class CoberturaActivity extends AppCompatActivity {
     public void seleccionarResponsabilidadCivil(View view) {
 
         coberturaSeleccionada = "Responsabilidad Civil";
-        precioSeleccionado = 45000;
+
+        double coeficiente = 0.002;
+
+        primaCalculada = sumaAsegurada * coeficiente;
 
         actualizarCoberturaSeleccionada();
     }
@@ -116,7 +123,10 @@ public class CoberturaActivity extends AppCompatActivity {
     public void seleccionarTercerosCompleto(View view) {
 
         coberturaSeleccionada = "Terceros Completo";
-        precioSeleccionado = 72500;
+
+        double coeficiente = 0.0035;
+
+        primaCalculada = sumaAsegurada * coeficiente;
 
         actualizarCoberturaSeleccionada();
     }
@@ -124,25 +134,18 @@ public class CoberturaActivity extends AppCompatActivity {
     public void seleccionarTodoRiesgo(View view) {
 
         coberturaSeleccionada = "Todo Riesgo";
-        precioSeleccionado = 118900;
+
+        double coeficiente = 0.006;
+        primaCalculada = sumaAsegurada * coeficiente;
 
         actualizarCoberturaSeleccionada();
     }
 
     private void actualizarCoberturaSeleccionada() {
 
-        txtCoberturaSeleccionada.setText(
-                "Cobertura seleccionada: "
-                        + coberturaSeleccionada
-                        + " - $"
-                        + precioSeleccionado
-        );
+        txtCoberturaSeleccionada.setText("Cobertura seleccionada: " + coberturaSeleccionada + "\nPrima calculada: $" + primaCalculada);
 
-        Toast.makeText(
-                this,
-                "Cobertura seleccionada correctamente",
-                Toast.LENGTH_SHORT
-        ).show();
+        Toast.makeText(this, "Cobertura seleccionada correctamente", Toast.LENGTH_SHORT).show();
     }
 
     public void continuarCobertura(View view) {
@@ -177,7 +180,8 @@ public class CoberturaActivity extends AppCompatActivity {
 
         intent.putExtra("cobertura", coberturaSeleccionada);
 
-        intent.putExtra("precio", precioSeleccionado);
+        intent.putExtra("sumaAsegurada", sumaAsegurada);
+        intent.putExtra("prima", primaCalculada);
         startActivity(intent);
     }
 }
