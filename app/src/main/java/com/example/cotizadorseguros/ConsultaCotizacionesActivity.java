@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class ConsultaCotizacionesActivity extends AppCompatActivity {
 
@@ -35,58 +37,41 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
 
-                    for (QueryDocumentSnapshot documento
-                            : queryDocumentSnapshots) {
+                    for (QueryDocumentSnapshot documento : queryDocumentSnapshots) {
 
-                        String tipoPersona =
-                                documento.getString("tipoPersona");
+                        String tipoPersona = documento.getString("tipoPersona");
+                        String patente = documento.getString("patente");
+                        String marca = documento.getString("marca");
+                        String modelo = documento.getString("modelo");
+                        String cobertura = documento.getString("cobertura");
+                        Double sumaAsegurada = documento.getDouble("sumaAsegurada");
+                        Double prima = documento.getDouble("prima");
+                        NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
 
-                        String patente =
-                                documento.getString("patente");
+                        String sumaAseguradaTexto = sumaAsegurada != null
+                                ? formatoMoneda.format(sumaAsegurada)
+                                : "No disponible";
 
-                        String marca =
-                                documento.getString("marca");
-
-                        String modelo =
-                                documento.getString("modelo");
-
-                        String cobertura =
-                                documento.getString("cobertura");
-
-                        Double precio =
-                                documento.getDouble("precio");
+                        String primaTexto = prima != null
+                                ? formatoMoneda.format(prima)
+                                : "No disponible";
 
                         String asegurado = "";
 
                         if ("fisica".equals(tipoPersona)) {
 
-                            String nombre =
-                                    documento.getString("nombre");
-
-                            String apellido =
-                                    documento.getString("apellido");
-
-                            asegurado =
-                                    nombre + " " + apellido;
+                            String nombre = documento.getString("nombre");
+                            String apellido = documento.getString("apellido");
+                            asegurado = nombre + " " + apellido;
                         }
 
                         if ("juridica".equals(tipoPersona)) {
-
-                            asegurado =
-                                    documento.getString("razonSocial");
+                            asegurado = documento.getString("razonSocial");
                         }
 
-                        TextView txtCotizacion =
-                                new TextView(this);
+                        TextView txtCotizacion = new TextView(this);
 
-                        txtCotizacion.setText(
-                                asegurado
-                                        + "\n"
-                                        + marca + " " + modelo
-                                        + "\nPatente: " + patente
-                                        + "\nCobertura: " + cobertura
-                                        + "\nPrecio: $" + precio
-                        );
+                        txtCotizacion.setText(asegurado + "\n" + marca + " " + modelo + "\nPatente: " + patente + "\nCobertura: " + cobertura + "\nSuma asegurada: " + sumaAseguradaTexto + "\nPrima: " + primaTexto);
 
                         txtCotizacion.setPadding(
                                 0,

@@ -18,6 +18,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class ResumenActivity extends AppCompatActivity {
     private TextView txtResumenAsegurado;
@@ -90,12 +92,13 @@ public class ResumenActivity extends AppCompatActivity {
         uso = intent.getStringExtra("uso");
 
         cobertura = intent.getStringExtra("cobertura");
+        NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
 
         txtResumenVehiculo.setText(getString(R.string.resumen_vehiculo, marca, modelo, anio, patente, uso));
 
         txtResumenCobertura.setText(cobertura);
-        txtResumenSumaAsegurada.setText("$" + sumaAsegurada);
-        txtResumenPrima.setText("$" + prima);
+        txtResumenSumaAsegurada.setText(formatoMoneda.format(sumaAsegurada));
+        txtResumenPrima.setText(formatoMoneda.format(prima));
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main),
                 (v, insets) -> {
