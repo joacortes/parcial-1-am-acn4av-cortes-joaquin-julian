@@ -154,7 +154,7 @@ public class CoberturaActivity extends AppCompatActivity {
             return;
         }
 
-        Intent intent = new Intent(CoberturaActivity.this, ResumenActivity.class);
+        Intent intent = new Intent(CoberturaActivity.this, CondicionesComercialesActivity.class);
 
         intent.putExtra("tipoPersona", tipoPersona);
 

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Condiciones Comerciales"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/txtPrimaBase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Prima base"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp" />
+
+            <EditText
+                android:id="@+id/inputDescuento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:hint="Descuento %"
+                android:inputType="numberDecimal"
+                android:layout_marginTop="20dp" />
+
+            <EditText
+                android:id="@+id/inputRecargo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:hint="Recargo %"
+                android:inputType="numberDecimal"
+                android:layout_marginTop="12dp" />
+
+            <EditText
+                android:id="@+id/inputComision"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:hint="Comisión productor %"
+                android:inputType="numberDecimal"
+                android:layout_marginTop="12dp" />
+
+            <Button
+                android:id="@+id/btnCalcular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Calcular"
+                android:layout_marginTop="24dp"
+                android:onClick="calcularCondiciones" />
+
+            <TextView
+                android:id="@+id/txtPrimaFinal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Prima final"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp" />
+
+            <TextView
+                android:id="@+id/txtComisionCalculada"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Comisión"
+                android:layout_marginTop="12dp" />
+
+            <Button
+                android:id="@+id/btnContinuarCondiciones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Continuar"
+                android:layout_marginTop="24dp"
+                android:onClick="continuarCondiciones" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

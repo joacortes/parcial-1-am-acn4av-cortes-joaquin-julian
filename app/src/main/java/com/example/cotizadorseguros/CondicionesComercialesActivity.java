@@ -1,0 +1,112 @@
+package com.example.cotizadorseguros;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.text.NumberFormat;
+import java.util.Locale;
+
+public class CondicionesComercialesActivity
+        extends AppCompatActivity {
+
+    private EditText inputDescuento;
+    private EditText inputRecargo;
+    private EditText inputComision;
+
+    private TextView txtPrimaBase;
+    private TextView txtPrimaFinal;
+    private TextView txtComisionCalculada;
+
+    private double primaBase;
+    private double primaFinal;
+    private double comisionCalculada;
+
+    private double descuento;
+    private double recargo;
+    private double porcentajeComision;
+
+    private Intent datosAnteriores;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_condiciones_comerciales);
+
+        inputDescuento = findViewById(R.id.inputDescuento);
+        inputRecargo = findViewById(R.id.inputRecargo);
+        inputComision = findViewById(R.id.inputComision);
+        txtPrimaBase = findViewById(R.id.txtPrimaBase);
+        txtPrimaFinal = findViewById(R.id.txtPrimaFinal);
+        txtComisionCalculada = findViewById(R.id.txtComisionCalculada);
+
+        datosAnteriores = getIntent();
+        primaBase = datosAnteriores.getDoubleExtra("prima", 0);
+        NumberFormat moneda = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
+
+        txtPrimaBase.setText("Prima base: " + moneda.format(primaBase));
+    }
+
+    public void calcularCondiciones(View view) {
+
+        String descuentoTexto = inputDescuento.getText().toString().trim();
+
+        String recargoTexto = inputRecargo.getText().toString().trim();
+
+        String comisionTexto = inputComision.getText().toString().trim();
+
+        descuento = descuentoTexto.isEmpty()
+                        ? 0
+                        : Double.parseDouble(descuentoTexto);
+
+        recargo = recargoTexto.isEmpty()
+                        ? 0
+                        : Double.parseDouble(recargoTexto);
+
+        porcentajeComision = comisionTexto.isEmpty()
+                        ? 0
+                        : Double.parseDouble(comisionTexto);
+
+        double montoDescuento = primaBase * (descuento / 100);
+
+        double montoRecargo = primaBase * (recargo / 100);
+
+        primaFinal = primaBase - montoDescuento + montoRecargo;
+
+        comisionCalculada = primaFinal * (porcentajeComision / 100);
+
+        NumberFormat moneda = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
+        txtPrimaFinal.setText("Prima final: " + moneda.format(primaFinal));
+        txtComisionCalculada.setText("Comisión productor: " + moneda.format(comisionCalculada));
+    }
+    private void copiarExtras(Intent origen, Intent destino) {
+        if (origen.getExtras() != null) {
+            destino.putExtras(origen.getExtras());
+        }
+    }
+    public void continuarCondiciones(View view) {
+
+        if (primaFinal == 0) {
+            Toast.makeText(this, "Calculá las condiciones antes de continuar", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent intent = new Intent(CondicionesComercialesActivity.this, ResumenActivity.class);
+        copiarExtras(datosAnteriores, intent);
+
+        intent.putExtra("primaBase", primaBase);
+        intent.putExtra("descuento", descuento);
+        intent.putExtra("recargo", recargo);
+        intent.putExtra("porcentajeComision", porcentajeComision);
+        intent.putExtra("prima", primaFinal);
+        intent.putExtra("comision", comisionCalculada);
+
+        startActivity(intent);
+    }
+}
