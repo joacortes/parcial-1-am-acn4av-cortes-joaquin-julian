@@ -42,7 +42,12 @@ public class ResumenActivity extends AppCompatActivity {
     private String uso;
 
     private String cobertura;
-    private double precio;
+
+    private TextView txtResumenSumaAsegurada;
+    private TextView txtResumenPrima;
+
+    private double sumaAsegurada;
+    private double prima;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +60,13 @@ public class ResumenActivity extends AppCompatActivity {
         txtResumenAsegurado = findViewById(R.id.txtResumenAsegurado);
         txtResumenVehiculo = findViewById(R.id.txtResumenVehiculo);
         txtResumenCobertura = findViewById(R.id.txtResumenCobertura);
-        txtResumenPrecio = findViewById(R.id.txtResumenPrecio);
+
+        txtResumenSumaAsegurada = findViewById(R.id.txtResumenSumaAsegurada);
+        txtResumenPrima = findViewById(R.id.txtResumenPrima);
 
         Intent intent = getIntent();
+        sumaAsegurada = intent.getDoubleExtra("sumaAsegurada", 0);
+        prima = intent.getDoubleExtra("prima", 0);
 
         tipoPersona = intent.getStringExtra("tipoPersona");
 
@@ -81,14 +90,12 @@ public class ResumenActivity extends AppCompatActivity {
         uso = intent.getStringExtra("uso");
 
         cobertura = intent.getStringExtra("cobertura");
-        precio = intent.getDoubleExtra("precio", 0);
-
-        double precio = intent.getDoubleExtra("precio", 0);
 
         txtResumenVehiculo.setText(getString(R.string.resumen_vehiculo, marca, modelo, anio, patente, uso));
 
         txtResumenCobertura.setText(cobertura);
-        txtResumenPrecio.setText(getString(R.string.resumen_precio, precio));
+        txtResumenSumaAsegurada.setText("$" + sumaAsegurada);
+        txtResumenPrima.setText("$" + prima);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main),
                 (v, insets) -> {
@@ -124,7 +131,8 @@ public class ResumenActivity extends AppCompatActivity {
         cotizacion.put("uso", uso);
 
         cotizacion.put("cobertura", cobertura);
-        cotizacion.put("precio", precio);
+        cotizacion.put("sumaAsegurada", sumaAsegurada);
+        cotizacion.put("prima", prima);
 
         FirebaseUser usuarioActual = FirebaseAuth.getInstance().getCurrentUser();
 

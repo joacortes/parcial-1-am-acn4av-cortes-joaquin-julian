@@ -74,21 +74,37 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp" />
 
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="PRECIO"
+                android:text="SUMA ASEGURADA"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:layout_marginTop="24dp" />
 
             <TextView
-                android:id="@+id/txtResumenPrecio"
+                android:id="@+id/txtResumenSumaAsegurada"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PRIMA"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginTop="24dp" />
+
+            <TextView
+                android:id="@+id/txtResumenPrima"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_marginTop="8dp" />
+
 
             <Button
                 android:id="@+id/btnGuardarCotizacion"
