@@ -44,14 +44,39 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
                         Double sumaAsegurada = documento.getDouble("sumaAsegurada");
                         Double prima = documento.getDouble("prima");
                         NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
+                        Double primaBase = documento.getDouble("primaBase");
+                        Double descuento = documento.getDouble("descuento");
+                        Double recargo = documento.getDouble("recargo");
+                        Double porcentajeComision = documento.getDouble("porcentajeComision");
+                        Double comision = documento.getDouble("comision");
 
                         String sumaAseguradaTexto = sumaAsegurada != null
                                 ? formatoMoneda.format(sumaAsegurada)
                                 : "No disponible";
 
+                        String primaBaseTexto = primaBase != null
+                                        ? formatoMoneda.format(primaBase)
+                                        : "No disponible";
+
                         String primaTexto = prima != null
                                 ? formatoMoneda.format(prima)
                                 : "No disponible";
+
+                        String comisionTexto = comision != null
+                                        ? formatoMoneda.format(comision)
+                                        : "No disponible";
+
+                        String descuentoTexto = descuento != null
+                                        ? descuento + "%"
+                                        : "No disponible";
+
+                        String recargoTexto = recargo != null
+                                        ? recargo + "%"
+                                        : "No disponible";
+
+                        String porcentajeComisionTexto = porcentajeComision != null
+                                        ? porcentajeComision + "%"
+                                        : "No disponible";
 
                         String asegurado = "";
 
@@ -68,7 +93,22 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
 
                         TextView txtCotizacion = new TextView(this);
 
-                        txtCotizacion.setText(asegurado + "\n" + marca + " " + modelo + "\nPatente: " + patente + "\nCobertura: " + cobertura + "\nSuma asegurada: " + sumaAseguradaTexto + "\nPrima: " + primaTexto);
+                        txtCotizacion.setText(asegurado
+                                + "\n"
+                                + marca + " " + modelo
+                                + "\nPatente: " + patente
+                                + "\n"
+                                + "\nSuma asegurada: " + sumaAseguradaTexto
+                                + "\nCobertura: " + cobertura
+                                + "\n"
+                                + "\nPrima base: " + primaBaseTexto
+                                + "\nDescuento: " + descuentoTexto
+                                + "\nRecargo: " + recargoTexto
+                                + "\nPrima final: " + primaTexto
+                                + "\n"
+                                + "\nComisión: " + porcentajeComisionTexto
+                                + "\nImporte comisión: " + comisionTexto
+                        );
 
                         txtCotizacion.setPadding(
                                 0,
