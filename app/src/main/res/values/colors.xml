@@ -5,4 +5,5 @@
     <color name="fondo_pantalla">#F5F7F9</color>
     <color name="texto_principal">#202124</color>
     <color name="texto_secundario">#5F6368</color>
+    <color name="cotizacion_fondo">#F3F4F6</color>
 </resources>

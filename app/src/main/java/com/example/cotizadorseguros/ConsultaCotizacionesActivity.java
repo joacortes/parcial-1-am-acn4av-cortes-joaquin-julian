@@ -110,12 +110,33 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
                                 + "\nImporte comisión: " + comisionTexto
                         );
 
+                        txtCotizacion.setTextSize(16);
+
                         txtCotizacion.setPadding(
-                                0,
                                 16,
-                                0,
-                                32
+                                16,
+                                16,
+                                16
                         );
+
+                        txtCotizacion.setBackgroundResource(
+                                R.drawable.fondo_cotizacion
+                        );
+
+                        LinearLayout.LayoutParams parametros =
+                                new LinearLayout.LayoutParams(
+                                        LinearLayout.LayoutParams.MATCH_PARENT,
+                                        LinearLayout.LayoutParams.WRAP_CONTENT
+                                );
+
+                        parametros.setMargins(
+                                0,
+                                0,
+                                0,
+                                24
+                        );
+
+                        txtCotizacion.setLayoutParams(parametros);
 
                         contenedorCotizaciones.addView(
                                 txtCotizacion
