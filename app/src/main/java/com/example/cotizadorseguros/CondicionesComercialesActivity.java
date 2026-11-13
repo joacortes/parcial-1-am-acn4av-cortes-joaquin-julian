@@ -54,36 +54,51 @@ public class CondicionesComercialesActivity
     }
 
     public void calcularCondiciones(View view) {
+        actualizarCalculo();
+    }
 
-        String descuentoTexto = inputDescuento.getText().toString().trim();
+    private boolean actualizarCalculo() {
+        try {
+            double nuevoDescuento = leerPorcentaje(inputDescuento, 100);
+            double nuevoRecargo = leerPorcentaje(inputRecargo, Double.MAX_VALUE);
+            double nuevaComision = leerPorcentaje(inputComision, 100);
 
-        String recargoTexto = inputRecargo.getText().toString().trim();
+            if (!Double.isFinite(primaBase) || primaBase <= 0) {
+                throw new IllegalArgumentException();
+            }
 
-        String comisionTexto = inputComision.getText().toString().trim();
+            double montoDescuento = primaBase * (nuevoDescuento / 100);
+            double montoRecargo = primaBase * (nuevoRecargo / 100);
+            double nuevaPrimaFinal = primaBase - montoDescuento + montoRecargo;
+            double nuevaComisionCalculada = nuevaPrimaFinal * (nuevaComision / 100);
 
-        descuento = descuentoTexto.isEmpty()
-                        ? 0
-                        : Double.parseDouble(descuentoTexto);
+            if (!Double.isFinite(nuevaPrimaFinal) || !Double.isFinite(nuevaComisionCalculada)) {
+                throw new IllegalArgumentException();
+            }
 
-        recargo = recargoTexto.isEmpty()
-                        ? 0
-                        : Double.parseDouble(recargoTexto);
+            descuento = nuevoDescuento;
+            recargo = nuevoRecargo;
+            porcentajeComision = nuevaComision;
+            primaFinal = nuevaPrimaFinal;
+            comisionCalculada = nuevaComisionCalculada;
 
-        porcentajeComision = comisionTexto.isEmpty()
-                        ? 0
-                        : Double.parseDouble(comisionTexto);
+            NumberFormat moneda = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
 
-        double montoDescuento = primaBase * (descuento / 100);
+            txtPrimaFinal.setText("Prima final: " + moneda.format(primaFinal));
 
-        double montoRecargo = primaBase * (recargo / 100);
+            txtComisionCalculada.setText("Comisión productor: " + moneda.format(comisionCalculada));
 
-        primaFinal = primaBase - montoDescuento + montoRecargo;
+            return true;
 
-        comisionCalculada = primaFinal * (porcentajeComision / 100);
+        } catch (IllegalArgumentException e) {
 
-        NumberFormat moneda = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
-        txtPrimaFinal.setText("Prima final: " + moneda.format(primaFinal));
-        txtComisionCalculada.setText("Comisión productor: " + moneda.format(comisionCalculada));
+            txtPrimaFinal.setText(R.string.prima_pendiente);
+            txtComisionCalculada.setText(R.string.comision_pendiente);
+
+            Toast.makeText(this, R.string.error_condiciones, Toast.LENGTH_LONG).show();
+
+            return false;
+        }
     }
     private void copiarExtras(Intent origen, Intent destino) {
         if (origen.getExtras() != null) {
@@ -92,8 +107,7 @@ public class CondicionesComercialesActivity
     }
     public void continuarCondiciones(View view) {
 
-        if (primaFinal == 0) {
-            Toast.makeText(this, "Calculá las condiciones antes de continuar", Toast.LENGTH_SHORT).show();
+        if (!actualizarCalculo()) {
             return;
         }
 
@@ -108,5 +122,26 @@ public class CondicionesComercialesActivity
         intent.putExtra("comision", comisionCalculada);
 
         startActivity(intent);
+    }
+
+    private double leerPorcentaje(EditText campo, double maximo) {
+        String texto = campo.getText().toString().trim();
+
+        // Un porcentaje opcional vacío equivale a cero.
+        if (texto.isEmpty()) {
+            return 0;
+        }
+
+        if (!texto.matches("[0-9]+([.,][0-9]+)?")) {
+            throw new IllegalArgumentException();
+        }
+
+        double porcentaje = Double.parseDouble(texto.replace(',', '.'));
+
+        if (!Double.isFinite(porcentaje) || porcentaje < 0 || porcentaje > maximo) {
+            throw new IllegalArgumentException();
+        }
+
+        return porcentaje;
     }
 }

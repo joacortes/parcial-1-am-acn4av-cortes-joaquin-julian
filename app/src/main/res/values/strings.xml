@@ -46,4 +46,9 @@
     <string name="terceros_completo">Terceros Completo</string>
     <string name="todo_riesgo">Todo Riesgo</string>
     <string name="error_suma_asegurada">Ingresá un importe mayor a cero, sin separadores de miles. Podés usar coma o punto decimal.</string>
+    <string name="error_condiciones">Revisá los porcentajes y la prima base. Descuento y comisión deben estar entre 0 y 100; el recargo no puede ser negativo. Ingresá los números sin separadores de miles.</string>
+
+    <string name="prima_pendiente">Prima final pendiente de cálculo</string>
+
+    <string name="comision_pendiente">Comisión pendiente de cálculo</string>
 </resources>
