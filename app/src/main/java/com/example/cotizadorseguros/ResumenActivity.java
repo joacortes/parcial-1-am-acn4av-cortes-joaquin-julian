@@ -93,12 +93,16 @@ public class ResumenActivity extends AppCompatActivity {
             nombre = intent.getStringExtra("nombre");
             apellido = intent.getStringExtra("apellido");
             dni = intent.getStringExtra("dni");
+
+            txtResumenAsegurado.setText(getString(R.string.resumen_persona_fisica, nombre, apellido, dni));
         }
 
         if ("juridica".equals(tipoPersona)) {
             razonSocial = intent.getStringExtra("razonSocial");
             cuit = intent.getStringExtra("cuit");
             nombreFantasia = intent.getStringExtra("nombreFantasia");
+
+            txtResumenAsegurado.setText(getString(R.string.resumen_persona_juridica, razonSocial, cuit, nombreFantasia));
         }
 
 
