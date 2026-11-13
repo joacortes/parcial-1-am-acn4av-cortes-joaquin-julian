@@ -82,11 +82,12 @@ public class CoberturaActivity extends AppCompatActivity {
         anio = intent.getStringExtra("anio");
         uso = intent.getStringExtra("uso");
 
-        txtDatosVehiculo.setText(
-                marca + " " + modelo
-                        + " - " + anio
-                        + " - Patente " + patente
-        );
+        if (savedInstanceState != null) {
+            coberturaSeleccionada = savedInstanceState.getString("coberturaSeleccionada", "");
+            primaCalculada = savedInstanceState.getDouble("primaCalculada", 0);
+        }
+
+        txtDatosVehiculo.setText(marca + " " + modelo + " - " + anio + " - Patente " + patente);
 
         ViewCompat.setOnApplyWindowInsetsListener(
                 findViewById(R.id.main),
@@ -107,6 +108,10 @@ public class CoberturaActivity extends AppCompatActivity {
                     return insets;
                 }
         );
+
+        if (!coberturaSeleccionada.isEmpty()) {
+            mostrarCoberturaSeleccionada();
+        }
     }
 
     public void seleccionarResponsabilidadCivil(View view) {
@@ -141,9 +146,12 @@ public class CoberturaActivity extends AppCompatActivity {
         actualizarCoberturaSeleccionada();
     }
 
-    private void actualizarCoberturaSeleccionada() {
-
+    private void mostrarCoberturaSeleccionada() {
         txtCoberturaSeleccionada.setText("Cobertura seleccionada: " + coberturaSeleccionada + "\nPrima calculada: $" + primaCalculada);
+    }
+
+    private void actualizarCoberturaSeleccionada() {
+        mostrarCoberturaSeleccionada();
 
         Toast.makeText(this, "Cobertura seleccionada correctamente", Toast.LENGTH_SHORT).show();
     }
@@ -187,5 +195,12 @@ public class CoberturaActivity extends AppCompatActivity {
         intent.putExtra("sumaAsegurada", sumaAsegurada);
         intent.putExtra("prima", primaCalculada);
         startActivity(intent);
+    }
+
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString("coberturaSeleccionada", coberturaSeleccionada);
+        outState.putDouble("primaCalculada", primaCalculada);
+
+        super.onSaveInstanceState(outState);
     }
 }
