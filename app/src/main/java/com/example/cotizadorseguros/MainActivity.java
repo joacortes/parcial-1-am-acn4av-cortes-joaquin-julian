@@ -203,6 +203,10 @@ public class MainActivity extends AppCompatActivity {
         inputNumero = findViewById(R.id.inputNumero);
         inputLocalidad = findViewById(R.id.inputLocalidad);
 
+        if (savedInstanceState != null) {
+            restaurarAsegurado(savedInstanceState);
+        }
+
         btnPersonaFisica.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -373,5 +377,55 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("localidad", localidad);
         intent.putStringArrayListExtra("telefonosAdicionales", new ArrayList<>(telefonosAdicionales));
         startActivity(intent);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString("tipoPersonaSeleccionado", tipoPersonaSeleccionado);
+
+        outState.putStringArrayList("telefonosAdicionales", new ArrayList<>(telefonosAdicionales));
+
+        if ("fisica".equals(tipoPersonaSeleccionado)) {
+            outState.putString("nombre", inputNombre.getText().toString());
+            outState.putString("apellido", inputApellido.getText().toString());
+            outState.putString("dni", inputDni.getText().toString());
+            outState.putString("fechaNacimiento", inputFechaNacimiento.getText().toString());
+        }
+
+        if ("juridica".equals(tipoPersonaSeleccionado)) {
+            outState.putString("razonSocial", inputRazonSocial.getText().toString());
+            outState.putString("cuit", inputCuit.getText().toString());
+            outState.putString("nombreFantasia", inputNombreFantasia.getText().toString());
+        }
+
+        super.onSaveInstanceState(outState);
+    }
+
+    private void restaurarAsegurado(Bundle estado) {
+        tipoPersonaSeleccionado = estado.getString("tipoPersonaSeleccionado", "");
+
+        if ("fisica".equals(tipoPersonaSeleccionado)) {
+            mostrarCamposPersonaFisica();
+            inputNombre.setText(estado.getString("nombre", ""));
+            inputApellido.setText(estado.getString("apellido", ""));
+            inputDni.setText(estado.getString("dni", ""));
+            inputFechaNacimiento.setText(estado.getString("fechaNacimiento", ""));
+        }
+
+        if ("juridica".equals(tipoPersonaSeleccionado)) {
+            mostrarCamposPersonaJuridica();
+
+            inputRazonSocial.setText(estado.getString("razonSocial", ""));
+            inputCuit.setText(estado.getString("cuit", ""));
+            inputNombreFantasia.setText(estado.getString("nombreFantasia", ""));
+        }
+
+        ArrayList<String> telefonosGuardados = estado.getStringArrayList("telefonosAdicionales");
+
+        if (telefonosGuardados != null) {
+            telefonosAdicionales = new ArrayList<>(telefonosGuardados);
+        }
+
+        mostrarTelefonosAdicionales();
     }
 }
