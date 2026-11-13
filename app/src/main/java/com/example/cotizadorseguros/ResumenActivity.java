@@ -60,6 +60,7 @@ public class ResumenActivity extends AppCompatActivity {
     private double recargo;
     private double porcentajeComision;
     private double comision;
+    private String cotizacionId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +68,14 @@ public class ResumenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_resumen);
 
         db = FirebaseFirestore.getInstance();
+
+        if (savedInstanceState != null) {
+            cotizacionId = savedInstanceState.getString("cotizacionId");
+        }
+
+        if (cotizacionId == null) {
+            cotizacionId = db.collection("cotizaciones").document().getId();
+        }
 
         txtResumenAsegurado = findViewById(R.id.txtResumenAsegurado);
         txtResumenVehiculo = findViewById(R.id.txtResumenVehiculo);
@@ -137,6 +146,11 @@ public class ResumenActivity extends AppCompatActivity {
         );
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString("cotizacionId", cotizacionId);
+        super.onSaveInstanceState(outState);
+    }
     public void guardarCotizacion(View view) {
 
         Map<String, Object> cotizacion = new HashMap<>();
@@ -187,7 +201,7 @@ public class ResumenActivity extends AppCompatActivity {
             cotizacion.put("usuario", usuarioActual.getEmail());
         }
 
-        db.collection("cotizaciones").add(cotizacion).addOnSuccessListener(documentReference -> {
+        db.collection("cotizaciones").document(cotizacionId).set(cotizacion).addOnSuccessListener(documentReference -> {
                     Toast.makeText(this, "Cotización guardada correctamente", Toast.LENGTH_LONG).show();
                 }).addOnFailureListener(e -> {
                     Toast.makeText(this, "Error al guardar la cotización", Toast.LENGTH_LONG).show();
