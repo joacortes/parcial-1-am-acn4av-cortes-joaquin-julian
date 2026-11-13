@@ -371,7 +371,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("calle", calle);
         intent.putExtra("numero", numero);
         intent.putExtra("localidad", localidad);
-
+        intent.putStringArrayListExtra("telefonosAdicionales", new ArrayList<>(telefonosAdicionales));
         startActivity(intent);
     }
 }

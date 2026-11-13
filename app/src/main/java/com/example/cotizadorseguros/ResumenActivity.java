@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.ArrayList;
 
 public class ResumenActivity extends AppCompatActivity {
     private TextView txtResumenAsegurado;
@@ -139,6 +140,18 @@ public class ResumenActivity extends AppCompatActivity {
     public void guardarCotizacion(View view) {
 
         Map<String, Object> cotizacion = new HashMap<>();
+
+        cotizacion.put("email", getIntent().getStringExtra("email"));
+        cotizacion.put("telefono", getIntent().getStringExtra("telefono"));
+        cotizacion.put("calle", getIntent().getStringExtra("calle"));
+        cotizacion.put("numero", getIntent().getStringExtra("numero"));
+        cotizacion.put("localidad", getIntent().getStringExtra("localidad"));
+
+        ArrayList<String> telefonosAdicionales = getIntent().getStringArrayListExtra("telefonosAdicionales");
+
+        if (telefonosAdicionales != null) {
+            cotizacion.put("telefonosAdicionales", telefonosAdicionales);
+        }
         cotizacion.put("tipoPersona", tipoPersona);
 
         if ("fisica".equals(tipoPersona)) {

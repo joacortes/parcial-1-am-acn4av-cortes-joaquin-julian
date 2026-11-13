@@ -156,6 +156,10 @@ public class CoberturaActivity extends AppCompatActivity {
 
         Intent intent = new Intent(CoberturaActivity.this, CondicionesComercialesActivity.class);
 
+        if (getIntent().getExtras() != null) {
+            intent.putExtras(getIntent().getExtras());
+        }
+
         intent.putExtra("tipoPersona", tipoPersona);
 
         if ("fisica".equals(tipoPersona)) {

@@ -246,6 +246,9 @@ public class VehiculoActivity extends AppCompatActivity {
 
         Intent intent = new Intent(VehiculoActivity.this, CoberturaActivity.class);
 
+        if (getIntent().getExtras() != null) {
+            intent.putExtras(getIntent().getExtras());
+        }
         intent.putExtra("tipoPersona", tipoPersona);
 
         if ("fisica".equals(tipoPersona)) {
