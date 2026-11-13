@@ -45,4 +45,5 @@
     <string name="responsabilidad_civil">Responsabilidad Civil</string>
     <string name="terceros_completo">Terceros Completo</string>
     <string name="todo_riesgo">Todo Riesgo</string>
+    <string name="error_suma_asegurada">Ingresá un importe mayor a cero, sin separadores de miles. Podés usar coma o punto decimal.</string>
 </resources>

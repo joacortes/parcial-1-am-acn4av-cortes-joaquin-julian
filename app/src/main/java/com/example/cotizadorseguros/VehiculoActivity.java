@@ -242,7 +242,25 @@ public class VehiculoActivity extends AppCompatActivity {
             return;
         }
 
-        double sumaAsegurada = Double.parseDouble(sumaAseguradaTexto);
+        double sumaAsegurada;
+
+        try {
+            // Acepta números como 15000000, 15000000.50 o 15000000,50.
+            if (!sumaAseguradaTexto.matches("[0-9]+([.,][0-9]+)?")) {
+                throw new IllegalArgumentException();
+            }
+
+            sumaAsegurada = Double.parseDouble(sumaAseguradaTexto.replace(',', '.'));
+
+            if (!Double.isFinite(sumaAsegurada) || sumaAsegurada <= 0) {
+                throw new IllegalArgumentException();
+            }
+
+        } catch (IllegalArgumentException e) {
+            inputSumaAsegurada.setError(getString(R.string.error_suma_asegurada));
+            inputSumaAsegurada.requestFocus();
+            return;
+        }
 
         Intent intent = new Intent(VehiculoActivity.this, CoberturaActivity.class);
 
