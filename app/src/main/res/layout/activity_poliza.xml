@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_pantalla">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/poliza_titulo"
+                android:textSize="@dimen/titulo_size"
+                android:textStyle="bold"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:text="@string/poliza_vigencia"
+                android:labelFor="@id/inputVigencia" />
+
+            <EditText
+                android:id="@+id/inputVigencia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/altura_minima_input"
+                android:hint="@string/poliza_seleccionar_fecha"
+                android:inputType="none"
+                android:focusable="false"
+                android:clickable="true"
+                android:importantForAutofill="no" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:text="@string/poliza_duracion"
+                android:labelFor="@id/spinnerDuracion" />
+
+            <Spinner
+                android:id="@+id/spinnerDuracion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/altura_minima_input"
+                android:entries="@array/poliza_duraciones" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:text="@string/poliza_forma_pago"
+                android:labelFor="@id/spinnerFormaPago" />
+
+            <Spinner
+                android:id="@+id/spinnerFormaPago"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/altura_minima_input"
+                android:entries="@array/poliza_formas_pago" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:text="@string/poliza_condicion_impositiva"
+                android:labelFor="@id/spinnerCondicionImpositiva" />
+
+            <Spinner
+                android:id="@+id/spinnerCondicionImpositiva"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/altura_minima_input"
+                android:entries="@array/poliza_condiciones_impositivas" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:text="@string/poliza_productor"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtProductorPoliza"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_chico"
+                tools:text="productor@ejemplo.com" />
+
+            <Button
+                android:id="@+id/btnContinuarPoliza"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:text="@string/poliza_continuar" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

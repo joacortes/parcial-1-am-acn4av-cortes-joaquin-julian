@@ -53,4 +53,36 @@
     <string name="comision_pendiente">Comisión pendiente de cálculo</string>
 
     <string name="error_sesion_requerida">Iniciá sesión para guardar o consultar cotizaciones.</string>
+
+    <!-- Datos de la póliza -->
+    <string name="poliza_titulo">Datos de la póliza</string>
+    <string name="poliza_vigencia">Inicio de vigencia</string>
+    <string name="poliza_seleccionar_fecha">Seleccioná una fecha</string>
+    <string name="poliza_duracion">Duración</string>
+    <string name="poliza_forma_pago">Forma de pago</string>
+    <string name="poliza_condicion_impositiva">Condición impositiva</string>
+    <string name="poliza_productor">Productor</string>
+    <string name="poliza_continuar">Continuar</string>
+
+    <string-array name="poliza_duraciones">
+        <item>Seleccioná una duración</item>
+        <item>Mensual</item>
+        <item>Semestral</item>
+        <item>Anual</item>
+    </string-array>
+
+    <string-array name="poliza_formas_pago">
+        <item>Seleccioná una forma de pago</item>
+        <item>Débito automático</item>
+        <item>Tarjeta de crédito</item>
+        <item>Transferencia bancaria</item>
+    </string-array>
+
+    <string-array name="poliza_condiciones_impositivas">
+        <item>Seleccioná una condición</item>
+        <item>Consumidor final</item>
+        <item>Responsable inscripto</item>
+        <item>Monotributista</item>
+        <item>Exento</item>
+    </string-array>
 </resources>
