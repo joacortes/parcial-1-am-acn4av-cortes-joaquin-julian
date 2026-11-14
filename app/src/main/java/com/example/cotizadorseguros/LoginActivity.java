@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void loginAction(View view) {
         String email = inputEmail.getText().toString().trim();
-        String password = inputPassword.getText().toString().trim();
+        String password = inputPassword.getText().toString();
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Completá email y contraseña", Toast.LENGTH_SHORT).show();
             return;

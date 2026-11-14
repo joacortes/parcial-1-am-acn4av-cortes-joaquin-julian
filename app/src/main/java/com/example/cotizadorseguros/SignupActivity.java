@@ -28,7 +28,7 @@ public class SignupActivity extends AppCompatActivity {
     }
     public void signupAction(View view) {
         String email = inputEmailRegistro.getText().toString().trim();
-        String password = inputPasswordRegistro.getText().toString().trim();
+        String password = inputPasswordRegistro.getText().toString();
 
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this,  "Completá email y contraseña", Toast.LENGTH_SHORT).show();
