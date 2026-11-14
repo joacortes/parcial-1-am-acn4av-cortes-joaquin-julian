@@ -244,10 +244,30 @@ public class ResumenActivity extends AppCompatActivity {
         cotizacion.put("usuario", usuarioActual.getEmail());
         cotizacion.put("usuarioUid", usuarioActual.getUid());
 
-        db.collection("cotizaciones").document(cotizacionId).set(cotizacion).addOnSuccessListener(documentReference -> {
-                    Toast.makeText(this, "Cotización guardada correctamente", Toast.LENGTH_LONG).show();
+        view.setEnabled(false);
+
+        db.collection("cotizaciones").document(cotizacionId).set(cotizacion).addOnSuccessListener(resultado -> {
+                    String asegurado;
+                    if ("fisica".equals(tipoPersona)) {
+                        asegurado = nombre + " " + apellido;
+                    } else {
+                        asegurado = razonSocial;
+                    }
+
+                    Intent intent = new Intent(ResumenActivity.this, CotizacionGuardadaActivity.class);
+
+                    intent.putExtra("cotizacionId", cotizacionId);
+                    intent.putExtra("asegurado", asegurado);
+                    intent.putExtra("prima", prima);
+
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                    startActivity(intent);
+                    finish();
                 }).addOnFailureListener(e -> {
-                    Toast.makeText(this, "Error al guardar la cotización", Toast.LENGTH_LONG).show();
+                    view.setEnabled(true);
+
+                    Toast.makeText(this, R.string.error_guardar_cotizacion, Toast.LENGTH_LONG).show();
                 });
     }
 

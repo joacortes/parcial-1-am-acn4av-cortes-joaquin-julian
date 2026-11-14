@@ -94,4 +94,11 @@
     <string name="resumen_datos_poliza">Inicio de vigencia: %1$s\nDuración: %2$s\nForma de pago: %3$s\nCondición impositiva: %4$s\nProductor: %5$s</string>
 
     <string name="dato_no_disponible">No disponible</string>
+
+    <string name="guardada_titulo">Cotización guardada</string>
+    <string name="guardada_numero">Número de cotización:\n%1$s</string>
+    <string name="guardada_asegurado">Asegurado:\n%1$s</string>
+    <string name="guardada_prima">Prima final:\n%1$s</string>
+    <string name="guardada_volver_inicio">Volver al inicio</string>
+    <string name="error_guardar_cotizacion">No se pudo guardar la cotización. Intentá nuevamente.</string>
 </resources>
