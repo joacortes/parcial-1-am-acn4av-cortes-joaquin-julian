@@ -51,4 +51,6 @@
     <string name="prima_pendiente">Prima final pendiente de cálculo</string>
 
     <string name="comision_pendiente">Comisión pendiente de cálculo</string>
+
+    <string name="error_sesion_requerida">Iniciá sesión para guardar o consultar cotizaciones.</string>
 </resources>

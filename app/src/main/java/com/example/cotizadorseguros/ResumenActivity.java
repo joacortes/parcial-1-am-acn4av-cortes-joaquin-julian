@@ -153,6 +153,14 @@ public class ResumenActivity extends AppCompatActivity {
     }
     public void guardarCotizacion(View view) {
 
+        FirebaseUser usuarioActual = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (usuarioActual == null) {
+
+            Toast.makeText(this, R.string.error_sesion_requerida, Toast.LENGTH_LONG).show();
+            return;
+        }
+
         Map<String, Object> cotizacion = new HashMap<>();
 
         cotizacion.put("email", getIntent().getStringExtra("email"));
@@ -195,11 +203,8 @@ public class ResumenActivity extends AppCompatActivity {
         cotizacion.put("porcentajeComision", porcentajeComision);
         cotizacion.put("comision", comision);
 
-        FirebaseUser usuarioActual = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (usuarioActual != null) {
-            cotizacion.put("usuario", usuarioActual.getEmail());
-        }
+        cotizacion.put("usuario", usuarioActual.getEmail());
+        cotizacion.put("usuarioUid", usuarioActual.getUid());
 
         db.collection("cotizaciones").document(cotizacionId).set(cotizacion).addOnSuccessListener(documentReference -> {
                     Toast.makeText(this, "Cotización guardada correctamente", Toast.LENGTH_LONG).show();
