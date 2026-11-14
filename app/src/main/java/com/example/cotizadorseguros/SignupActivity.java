@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
+import android.content.Intent;
 
 public class SignupActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -38,6 +39,10 @@ public class SignupActivity extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(SignupActivity.this, InicioActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                        startActivity(intent);
                         finish();
                     } else {
                         Toast.makeText(this,  "No se pudo registrar el usuario", Toast.LENGTH_SHORT).show();
