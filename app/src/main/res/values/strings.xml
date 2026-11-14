@@ -88,4 +88,10 @@
 
     <string name="poliza_error_fecha">Seleccioná una fecha de vigencia igual o posterior a hoy.</string>
     <string name="poliza_error_opciones">Seleccioná la duración, la forma de pago y la condición impositiva.</string>
+
+    <string name="resumen_seccion_poliza">PÓLIZA</string>
+
+    <string name="resumen_datos_poliza">Inicio de vigencia: %1$s\nDuración: %2$s\nForma de pago: %3$s\nCondición impositiva: %4$s\nProductor: %5$s</string>
+
+    <string name="dato_no_disponible">No disponible</string>
 </resources>

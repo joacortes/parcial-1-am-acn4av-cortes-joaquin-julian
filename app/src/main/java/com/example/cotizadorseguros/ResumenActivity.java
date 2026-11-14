@@ -89,6 +89,19 @@ public class ResumenActivity extends AppCompatActivity {
         txtResumenComision = findViewById(R.id.txtResumenComision);
 
         Intent intent = getIntent();
+
+        TextView txtResumenPoliza = findViewById(R.id.txtResumenPoliza);
+
+        txtResumenPoliza.setText(getString(
+                        R.string.resumen_datos_poliza,
+                        leerDatoPoliza("vigenciaDesde"),
+                        leerDatoPoliza("duracion"),
+                        leerDatoPoliza("formaPago"),
+                        leerDatoPoliza("condicionImpositiva"),
+                        leerDatoPoliza("productorEmail")
+                )
+        );
+
         primaBase = intent.getDoubleExtra("primaBase", 0);
         descuento = intent.getDoubleExtra("descuento", 0);
         recargo = intent.getDoubleExtra("recargo", 0);
@@ -163,6 +176,31 @@ public class ResumenActivity extends AppCompatActivity {
 
         Map<String, Object> cotizacion = new HashMap<>();
 
+        String[] camposPoliza = {
+                "vigenciaDesde",
+                "duracion",
+                "formaPago",
+                "condicionImpositiva",
+                "productorEmail"
+        };
+
+        for (String campo : camposPoliza) {
+            String valor = getIntent().getStringExtra(campo);
+
+            if (valor != null) {
+                cotizacion.put(campo, valor);
+            }
+        }
+
+        int duracionMeses = getIntent().getIntExtra(
+                "duracionMeses",
+                0
+        );
+
+        if (duracionMeses > 0) {
+            cotizacion.put("duracionMeses", duracionMeses);
+        }
+
         cotizacion.put("email", getIntent().getStringExtra("email"));
         cotizacion.put("telefono", getIntent().getStringExtra("telefono"));
         cotizacion.put("calle", getIntent().getStringExtra("calle"));
@@ -211,5 +249,15 @@ public class ResumenActivity extends AppCompatActivity {
                 }).addOnFailureListener(e -> {
                     Toast.makeText(this, "Error al guardar la cotización", Toast.LENGTH_LONG).show();
                 });
+    }
+
+    private String leerDatoPoliza(String clave) {
+        String valor = getIntent().getStringExtra(clave);
+
+        if (valor == null || valor.trim().isEmpty()) {
+            return getString(R.string.dato_no_disponible);
+        }
+
+        return valor;
     }
 }
