@@ -85,4 +85,7 @@
         <item>Monotributista</item>
         <item>Exento</item>
     </string-array>
+
+    <string name="poliza_error_fecha">Seleccioná una fecha de vigencia igual o posterior a hoy.</string>
+    <string name="poliza_error_opciones">Seleccioná la duración, la forma de pago y la condición impositiva.</string>
 </resources>

@@ -301,10 +301,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        Intent intent = new Intent(
-                MainActivity.this,
-                VehiculoActivity.class
-        );
+        Intent intent = new Intent(MainActivity.this, PolizaActivity.class);
 
         intent.putExtra(
                 "tipoPersona",
