@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -16,23 +15,56 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
-            android:id="@+id/contenedorCotizaciones"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:padding="@dimen/padding_pantalla">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Consulta de Cotizaciones"
-                android:textSize="28sp"
+                android:text="@string/consulta_titulo"
+                android:textSize="@dimen/titulo_size"
                 android:textStyle="bold"
-                android:gravity="center"
-                android:layout_marginBottom="24dp" />
+                android:gravity="center" />
+
+            <EditText
+                android:id="@+id/inputBuscarCotizacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:minHeight="@dimen/altura_minima_input"
+                android:hint="@string/consulta_buscar_numero"
+                android:inputType="textNoSuggestions"
+                android:maxLines="1"
+                android:importantForAutofill="no" />
+
+            <Button
+                android:id="@+id/btnBuscarCotizacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/consulta_buscar" />
+
+            <Button
+                android:id="@+id/btnVerTodasCotizaciones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/consulta_ver_todas" />
+
+            <TextView
+                android:id="@+id/txtEstadoConsulta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal" />
+
+            <LinearLayout
+                android:id="@+id/contenedorCotizaciones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:orientation="vertical" />
 
         </LinearLayout>
-
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

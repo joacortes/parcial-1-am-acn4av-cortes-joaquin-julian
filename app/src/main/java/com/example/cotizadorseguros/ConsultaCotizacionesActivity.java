@@ -13,11 +13,20 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.Query;
 
 public class ConsultaCotizacionesActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private LinearLayout contenedorCotizaciones;
+    private EditText inputBuscarCotizacion;
+    private Button btnBuscarCotizacion;
+    private Button btnVerTodasCotizaciones;
+    private TextView txtEstadoConsulta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +36,19 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        contenedorCotizaciones =
-                findViewById(R.id.contenedorCotizaciones);
+        contenedorCotizaciones = findViewById(R.id.contenedorCotizaciones);
+        inputBuscarCotizacion = findViewById(R.id.inputBuscarCotizacion);
+
+        btnBuscarCotizacion = findViewById(R.id.btnBuscarCotizacion);
+        btnVerTodasCotizaciones = findViewById(R.id.btnVerTodasCotizaciones);
+        txtEstadoConsulta = findViewById(R.id.txtEstadoConsulta);
+
+        btnBuscarCotizacion.setOnClickListener(v -> cargarCotizaciones());
+
+        btnVerTodasCotizaciones.setOnClickListener(v -> {
+            inputBuscarCotizacion.setText("");
+            cargarCotizaciones();
+        });
 
         cargarCotizaciones();
     }
@@ -37,124 +57,165 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
 
         FirebaseUser usuarioActual = FirebaseAuth.getInstance().getCurrentUser();
 
+        String numero = inputBuscarCotizacion.getText().toString().trim();
+
+        if (numero.contains("/") || numero.equals(".") || numero.equals("..")) {
+
+            inputBuscarCotizacion.setError(getString(R.string.consulta_numero_invalido));
+
+            return;
+        }
+
+        inputBuscarCotizacion.setError(null);
+
+        Query consulta = db.collection("cotizaciones").whereEqualTo("usuarioUid", usuarioActual.getUid());
+
+        if (!numero.isEmpty()) {
+            consulta = consulta.whereEqualTo(FieldPath.documentId(), numero);
+        }
+
+        cambiarEstadoCarga(true);
+        contenedorCotizaciones.removeAllViews();
+        txtEstadoConsulta.setText(R.string.consulta_cargando);
+
         if (usuarioActual == null) {
             Toast.makeText(this, R.string.error_sesion_requerida, Toast.LENGTH_LONG).show();
             finish();
             return;
         }
 
-        db.collection("cotizaciones").whereEqualTo("usuarioUid", usuarioActual.getUid()).get().addOnSuccessListener(queryDocumentSnapshots -> {
-                for (QueryDocumentSnapshot documento : queryDocumentSnapshots) {
+        consulta.get().addOnSuccessListener(queryDocumentSnapshots -> {
 
-                    String tipoPersona = documento.getString("tipoPersona");
-                    String patente = documento.getString("patente");
-                    String marca = documento.getString("marca");
-                    String modelo = documento.getString("modelo");
-                    String cobertura = documento.getString("cobertura");
-                    Double sumaAsegurada = documento.getDouble("sumaAsegurada");
-                    Double prima = documento.getDouble("prima");
-                    NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
-                    Double primaBase = documento.getDouble("primaBase");
-                    Double descuento = documento.getDouble("descuento");
-                    Double recargo = documento.getDouble("recargo");
-                    Double porcentajeComision = documento.getDouble("porcentajeComision");
-                    Double comision = documento.getDouble("comision");
+            cambiarEstadoCarga(false);
+            contenedorCotizaciones.removeAllViews();
 
-                    String sumaAseguradaTexto = sumaAsegurada != null
-                            ? formatoMoneda.format(sumaAsegurada)
-                            : "No disponible";
+            txtEstadoConsulta.setText(queryDocumentSnapshots.isEmpty()
+                    ? getString(R.string.consulta_sin_resultados)
+                    : ""
+            );
 
-                    String primaBaseTexto = primaBase != null
-                                    ? formatoMoneda.format(primaBase)
-                                    : "No disponible";
+            for (QueryDocumentSnapshot documento : queryDocumentSnapshots) {
 
-                    String primaTexto = prima != null
-                            ? formatoMoneda.format(prima)
-                            : "No disponible";
+                String tipoPersona = documento.getString("tipoPersona");
+                String patente = documento.getString("patente");
+                String marca = documento.getString("marca");
+                String modelo = documento.getString("modelo");
+                String cobertura = documento.getString("cobertura");
+                Double sumaAsegurada = documento.getDouble("sumaAsegurada");
+                Double prima = documento.getDouble("prima");
+                NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
+                Double primaBase = documento.getDouble("primaBase");
+                Double descuento = documento.getDouble("descuento");
+                Double recargo = documento.getDouble("recargo");
+                Double porcentajeComision = documento.getDouble("porcentajeComision");
+                Double comision = documento.getDouble("comision");
 
-                    String comisionTexto = comision != null
-                                    ? formatoMoneda.format(comision)
-                                    : "No disponible";
+                String sumaAseguradaTexto = sumaAsegurada != null
+                        ? formatoMoneda.format(sumaAsegurada)
+                        : "No disponible";
 
-                    String descuentoTexto = descuento != null
-                                    ? descuento + "%"
-                                    : "No disponible";
+                String primaBaseTexto = primaBase != null
+                                ? formatoMoneda.format(primaBase)
+                                : "No disponible";
 
-                    String recargoTexto = recargo != null
-                                    ? recargo + "%"
-                                    : "No disponible";
+                String primaTexto = prima != null
+                        ? formatoMoneda.format(prima)
+                        : "No disponible";
 
-                    String porcentajeComisionTexto = porcentajeComision != null
-                                    ? porcentajeComision + "%"
-                                    : "No disponible";
+                String comisionTexto = comision != null
+                                ? formatoMoneda.format(comision)
+                                : "No disponible";
 
-                    String asegurado = "";
+                String descuentoTexto = descuento != null
+                                ? descuento + "%"
+                                : "No disponible";
 
-                    if ("fisica".equals(tipoPersona)) {
+                String recargoTexto = recargo != null
+                                ? recargo + "%"
+                                : "No disponible";
 
-                        String nombre = documento.getString("nombre");
-                        String apellido = documento.getString("apellido");
-                        asegurado = nombre + " " + apellido;
-                    }
+                String porcentajeComisionTexto = porcentajeComision != null
+                                ? porcentajeComision + "%"
+                                : "No disponible";
 
-                    if ("juridica".equals(tipoPersona)) {
-                        asegurado = documento.getString("razonSocial");
-                    }
+                String asegurado = "";
 
-                    TextView txtCotizacion = new TextView(this);
+                if ("fisica".equals(tipoPersona)) {
 
-                    txtCotizacion.setText(asegurado
-                            + "\n"
-                            + marca + " " + modelo
-                            + "\nPatente: " + patente
-                            + "\n"
-                            + "\nSuma asegurada: " + sumaAseguradaTexto
-                            + "\nCobertura: " + cobertura
-                            + "\n"
-                            + "\nPrima base: " + primaBaseTexto
-                            + "\nDescuento: " + descuentoTexto
-                            + "\nRecargo: " + recargoTexto
-                            + "\nPrima final: " + primaTexto
-                            + "\n"
-                            + "\nComisión: " + porcentajeComisionTexto
-                            + "\nImporte comisión: " + comisionTexto
-                    );
-
-                    txtCotizacion.setTextSize(16);
-
-                    txtCotizacion.setPadding(
-                            16,
-                            16,
-                            16,
-                            16
-                    );
-
-                    txtCotizacion.setBackgroundResource(
-                            R.drawable.fondo_cotizacion
-                    );
-
-                    LinearLayout.LayoutParams parametros =
-                            new LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT
-                            );
-
-                    parametros.setMargins(
-                            0,
-                            0,
-                            0,
-                            24
-                    );
-
-                    txtCotizacion.setLayoutParams(parametros);
-
-                    contenedorCotizaciones.addView(
-                            txtCotizacion
-                    );
+                    String nombre = documento.getString("nombre");
+                    String apellido = documento.getString("apellido");
+                    asegurado = nombre + " " + apellido;
                 }
-            })
-            .addOnFailureListener(e -> {
-                Toast.makeText(this, "Error al cargar cotizaciones", Toast.LENGTH_SHORT).show();
-            });
+
+                if ("juridica".equals(tipoPersona)) {
+                    asegurado = documento.getString("razonSocial");
+                }
+
+                TextView txtCotizacion = new TextView(this);
+
+                txtCotizacion.setText(getString(R.string.consulta_numero_tarjeta, documento.getId())
+                        + "\n\n"
+                        + asegurado
+                        + "\n"
+                        + marca + " " + modelo
+                        + "\nPatente: " + patente
+                        + "\n"
+                        + "\nSuma asegurada: " + sumaAseguradaTexto
+                        + "\nCobertura: " + cobertura
+                        + "\n"
+                        + "\nPrima base: " + primaBaseTexto
+                        + "\nDescuento: " + descuentoTexto
+                        + "\nRecargo: " + recargoTexto
+                        + "\nPrima final: " + primaTexto
+                        + "\n"
+                        + "\nComisión: " + porcentajeComisionTexto
+                        + "\nImporte comisión: " + comisionTexto
+                );
+
+                txtCotizacion.setTextIsSelectable(true);
+                txtCotizacion.setTextSize(16);
+
+                txtCotizacion.setPadding(
+                        16,
+                        16,
+                        16,
+                        16
+                );
+
+                txtCotizacion.setBackgroundResource(
+                        R.drawable.fondo_cotizacion
+                );
+
+                LinearLayout.LayoutParams parametros =
+                        new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                        );
+
+                parametros.setMargins(
+                        0,
+                        0,
+                        0,
+                        24
+                );
+
+                txtCotizacion.setLayoutParams(parametros);
+
+                contenedorCotizaciones.addView(
+                        txtCotizacion
+                );
+            }
+        })
+        .addOnFailureListener(e -> {
+            cambiarEstadoCarga(false);
+            contenedorCotizaciones.removeAllViews();
+            txtEstadoConsulta.setText(R.string.consulta_error);
+        });
+    }
+
+    private void cambiarEstadoCarga(boolean cargando) {
+        inputBuscarCotizacion.setEnabled(!cargando);
+        btnBuscarCotizacion.setEnabled(!cargando);
+        btnVerTodasCotizaciones.setEnabled(!cargando);
     }
 }

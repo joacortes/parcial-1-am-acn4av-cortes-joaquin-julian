@@ -101,4 +101,15 @@
     <string name="guardada_prima">Prima final:\n%1$s</string>
     <string name="guardada_volver_inicio">Volver al inicio</string>
     <string name="error_guardar_cotizacion">No se pudo guardar la cotización. Intentá nuevamente.</string>
+
+
+    <string name="consulta_titulo">Consulta de cotizaciones</string>
+    <string name="consulta_buscar_numero">Número de cotización</string>
+    <string name="consulta_buscar">Buscar</string>
+    <string name="consulta_ver_todas">Ver todas mis cotizaciones</string>
+    <string name="consulta_cargando">Cargando cotizaciones…</string>
+    <string name="consulta_sin_resultados">No se encontraron cotizaciones.</string>
+    <string name="consulta_error">No se pudieron cargar las cotizaciones. Intentá nuevamente.</string>
+    <string name="consulta_numero_invalido">Copiá el número de cotización completo, sin barras.</string>
+    <string name="consulta_numero_tarjeta">Número: %1$s</string>
 </resources>
