@@ -65,20 +65,19 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
 
             findViewById(R.id.btnModificarPoliza).setVisibility(View.GONE);
             findViewById(R.id.btnModificarCobertura).setVisibility(View.GONE);
+            findViewById(R.id.btnModificarVehiculo).setVisibility(View.GONE);
         }
 
-        findViewById(R.id.btnVolverConsulta)
-                .setOnClickListener(v -> finish());
+        findViewById(R.id.btnVolverConsulta).setOnClickListener(v -> finish());
 
-        findViewById(R.id.btnModificarCondiciones)
-                .setOnClickListener(v -> modificarCondiciones());
+        findViewById(R.id.btnModificarCondiciones).setOnClickListener(v -> modificarCondiciones());
 
-        findViewById(R.id.btnEmitirPoliza)
-                .setOnClickListener(v -> emitirPoliza());
+        findViewById(R.id.btnEmitirPoliza).setOnClickListener(v -> emitirPoliza());
 
         findViewById(R.id.btnModificarPoliza).setOnClickListener(v -> modificarPoliza());
 
         findViewById(R.id.btnModificarCobertura).setOnClickListener(v -> modificarCobertura());
+        findViewById(R.id.btnModificarVehiculo).setOnClickListener(v -> modificarVehiculo());
 
         ViewCompat.setOnApplyWindowInsetsListener(
                 findViewById(R.id.main),
@@ -166,6 +165,7 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
 
                     findViewById(R.id.btnEmitirPoliza).setEnabled(puedeOperar);
                     findViewById(R.id.btnModificarPoliza).setEnabled(puedeOperar);
+                    findViewById(R.id.btnModificarVehiculo).setEnabled(puedeOperar);
                 })
                 .addOnFailureListener(e -> {
                     if (!isFinishing() && !isDestroyed()) {
@@ -513,6 +513,7 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
         findViewById(R.id.btnModificarCondiciones).setEnabled(false);
         findViewById(R.id.btnModificarPoliza).setEnabled(false);
         findViewById(R.id.btnModificarCobertura).setEnabled(false);
+        findViewById(R.id.btnModificarVehiculo).setEnabled(false);
 
         db.<String>runTransaction(transaccion -> {
             DocumentSnapshot documento = transaccion.get(referencia);
@@ -701,6 +702,20 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
 
         Intent intent = crearIntentEdicion(
                 CoberturaActivity.class
+        );
+
+        if (intent != null) {
+            startActivity(intent);
+        }
+    }
+
+    private void modificarVehiculo() {
+        if (!puedeEditarCotizacion()) {
+            return;
+        }
+
+        Intent intent = crearIntentEdicion(
+                VehiculoActivity.class
         );
 
         if (intent != null) {

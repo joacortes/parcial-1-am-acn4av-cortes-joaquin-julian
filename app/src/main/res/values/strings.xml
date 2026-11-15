@@ -188,4 +188,8 @@
     <string name="detalle_modificar_poliza">Modificar datos de póliza</string>
     <string name="error_cotizacion_no_editable">Solo se pueden modificar cotizaciones sin emitir.</string>
     <string name="detalle_modificar_cobertura">Modificar cobertura</string>
+
+    <string name="detalle_modificar_vehiculo">Modificar vehículo</string>
+    <string name="vehiculo_seleccionar_marca">Seleccioná una marca</string>
+    <string name="vehiculo_seleccionar_modelo">Seleccioná un modelo</string>
 </resources>

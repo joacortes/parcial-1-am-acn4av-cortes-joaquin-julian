@@ -28,6 +28,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
+import java.math.BigDecimal;
 
 public class VehiculoActivity extends AppCompatActivity {
     private Spinner spinnerMarca;
@@ -52,6 +53,8 @@ public class VehiculoActivity extends AppCompatActivity {
     private String nombreFantasia;
 
     private OkHttpClient clienteHttp;
+    private String marcaPendiente;
+    private String modeloPendiente;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,16 +67,41 @@ public class VehiculoActivity extends AppCompatActivity {
         spinnerMarca = findViewById(R.id.spinnerMarca);
         spinnerModelo = findViewById(R.id.spinnerModelo);
         inputSumaAsegurada = findViewById(R.id.inputSumaAsegurada);
+        if (savedInstanceState != null) {
+            marcaPendiente =
+                    savedInstanceState.getString("marcaSeleccionada");
+
+            modeloPendiente =
+                    savedInstanceState.getString("modeloSeleccionado");
+        } else {
+            marcaPendiente = getIntent().getStringExtra("marca");
+            modeloPendiente = getIntent().getStringExtra("modelo");
+        }
 
         spinnerMarca.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
 
                     @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        if (listaMarcas.isEmpty()) {
+                    public void onItemSelected(
+                            AdapterView<?> parent,
+                            View view,
+                            int position,
+                            long id
+                    ) {
+                        if (position <= 0
+                                || position >= nombresMarcas.size()) {
+                            spinnerModelo.setAdapter(null);
                             return;
                         }
-                        String nombreMarca = listaMarcas.get(position).getMakeName();
+
+                        String nombreMarca = nombresMarcas.get(position);
+
+                        if (modeloPendiente != null
+                                && !nombreMarca.equals(marcaPendiente)) {
+                            modeloPendiente = null;
+                        }
+
+                        spinnerModelo.setAdapter(null);
                         cargarModelosDesdeApi(nombreMarca);
                     }
 
@@ -93,6 +121,10 @@ public class VehiculoActivity extends AppCompatActivity {
 
         inputAnio = findViewById(R.id.inputAnio);
         inputUso = findViewById(R.id.inputUso);
+        if (savedInstanceState == null
+                && getIntent().hasExtra("cotizacionId")) {
+            precargarVehiculo();
+        }
 
         TextView txtAsegurado = findViewById(R.id.txtAsegurado);
 
@@ -159,6 +191,9 @@ public class VehiculoActivity extends AppCompatActivity {
                     RespuestaModelos respuesta = gson.fromJson(json, RespuestaModelos.class);
 
                     nombresModelos.clear();
+                    nombresModelos.add(
+                            getString(R.string.vehiculo_seleccionar_modelo)
+                    );
                     for(ModeloVehiculo modelo : respuesta.getResults()) {
                         nombresModelos.add(modelo.getModelName());
                     }
@@ -167,6 +202,21 @@ public class VehiculoActivity extends AppCompatActivity {
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(VehiculoActivity.this, android.R.layout.simple_spinner_item, nombresModelos);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spinnerModelo.setAdapter(adapter);
+                        if (modeloPendiente != null
+                                && marca.equals(marcaPendiente)
+                                && spinnerMarca.getSelectedItem() != null
+                                && marca.equals(
+                                spinnerMarca.getSelectedItem().toString()
+                        )) {
+
+                            int posicion = adapter.getPosition(modeloPendiente);
+
+                            if (posicion > 0) {
+                                spinnerModelo.setSelection(posicion);
+                            }
+
+                            modeloPendiente = null;
+                        }
                     });
                 }
         });
@@ -201,6 +251,7 @@ public class VehiculoActivity extends AppCompatActivity {
                         listaMarcas.addAll(respuesta.getResults());
 
                         nombresMarcas.clear();
+                        nombresMarcas.add(getString(R.string.vehiculo_seleccionar_marca));
 
                         for (MarcaVehiculo marca : listaMarcas) {
                             nombresMarcas.add(marca.getMakeName());
@@ -211,6 +262,14 @@ public class VehiculoActivity extends AppCompatActivity {
 
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spinnerMarca.setAdapter(adapter);
+
+                            if (marcaPendiente != null) {
+                                int posicion = adapter.getPosition(marcaPendiente);
+
+                                if (posicion > 0) {
+                                    spinnerMarca.setSelection(posicion);
+                                }
+                            }
                         });
                     }
                 });
@@ -219,7 +278,9 @@ public class VehiculoActivity extends AppCompatActivity {
     public void continuarVehiculo(View view) {
 
         if (spinnerMarca.getSelectedItem() == null
-                || spinnerModelo.getSelectedItem() == null) {
+                || spinnerModelo.getSelectedItem() == null
+                || spinnerMarca.getSelectedItemPosition() <= 0
+                || spinnerModelo.getSelectedItemPosition() <= 0) {
 
             Toast.makeText(
                     this,
@@ -291,5 +352,51 @@ public class VehiculoActivity extends AppCompatActivity {
         intent.putExtra("sumaAsegurada", sumaAsegurada);
 
         startActivity(intent);
+    }
+
+    private void precargarVehiculo() {
+        inputPatente.setText(
+                getIntent().getStringExtra("patente")
+        );
+
+        inputAnio.setText(
+                getIntent().getStringExtra("anio")
+        );
+
+        inputUso.setText(
+                getIntent().getStringExtra("uso")
+        );
+
+        double suma = getIntent().getDoubleExtra(
+                "sumaAsegurada",
+                0
+        );
+
+        if (Double.isFinite(suma) && suma > 0) {
+            inputSumaAsegurada.setText(
+                    BigDecimal.valueOf(suma).toPlainString()
+            );
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        String marcaActual = marcaPendiente;
+        String modeloActual = modeloPendiente;
+
+        if (spinnerMarca.getSelectedItemPosition() > 0) {
+            marcaActual =
+                    spinnerMarca.getSelectedItem().toString();
+        }
+
+        if (spinnerModelo.getSelectedItemPosition() > 0) {
+            modeloActual =
+                    spinnerModelo.getSelectedItem().toString();
+        }
+
+        outState.putString("marcaSeleccionada", marcaActual);
+        outState.putString("modeloSeleccionado", modeloActual);
+
+        super.onSaveInstanceState(outState);
     }
 }
