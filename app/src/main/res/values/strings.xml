@@ -166,7 +166,7 @@
     <string name="inicio_polizas">Pólizas</string>
     <string name="polizas_titulo">Consulta de pólizas</string>
     <string name="polizas_cargando">Cargando pólizas…</string>
-    <string name="polizas_sin_resultados">Todavía no tenés pólizas emitidas.</string>
+    <string name="polizas_sin_resultados">No se encontraron pólizas.</string>
     <string name="polizas_error">No se pudieron cargar las pólizas. Intentá nuevamente.</string>
     <string name="polizas_ver_detalle">Ver detalle</string>
     <string name="polizas_volver">Volver al inicio</string>
@@ -175,4 +175,13 @@
 
     <string name="detalle_poliza_titulo">Detalle de póliza</string>
     <string name="detalle_fecha_emision">Fecha de emisión: %1$s</string>
+
+    <string name="polizas_buscar_valor">Ingresá el valor a buscar</string>
+    <string name="polizas_buscar">Buscar</string>
+    <string name="polizas_ver_todas">Ver todas mis pólizas</string>
+
+    <string-array name="polizas_criterios">
+        <item>Número de póliza</item>
+        <item>Asegurado</item>
+    </string-array>
 </resources>

@@ -22,11 +22,21 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.NumberFormat;
 import java.util.Locale;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+import com.google.firebase.firestore.Query;
+
+import java.text.Normalizer;
 
 public class ConsultaPolizasActivity extends AppCompatActivity {
 
     private LinearLayout contenedorPolizas;
     private TextView txtEstadoPolizas;
+    private Spinner spinnerCriterioPolizas;
+    private EditText inputBuscarPoliza;
+    private Button btnBuscarPoliza;
+    private Button btnVerTodasPolizas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +68,25 @@ public class ConsultaPolizasActivity extends AppCompatActivity {
                 }
         );
 
+        spinnerCriterioPolizas = findViewById(R.id.spinnerCriterioPolizas);
+        inputBuscarPoliza = findViewById(R.id.inputBuscarPoliza);
+        btnBuscarPoliza = findViewById(R.id.btnBuscarPoliza);
+        btnVerTodasPolizas = findViewById(R.id.btnVerTodasPolizas);
+
+        btnBuscarPoliza.setOnClickListener(
+                v -> cargarPolizas()
+        );
+
+        btnVerTodasPolizas.setOnClickListener(v -> {
+            inputBuscarPoliza.setText("");
+            cargarPolizas();
+        });
+
         cargarPolizas();
     }
 
     private void cargarPolizas() {
-        FirebaseUser usuario =
-                FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
 
         if (usuario == null) {
             Toast.makeText(
@@ -76,37 +99,80 @@ public class ConsultaPolizasActivity extends AppCompatActivity {
             return;
         }
 
+        String valorBusqueda = inputBuscarPoliza
+                .getText()
+                .toString()
+                .trim();
+
+        boolean buscarPorAsegurado =
+                spinnerCriterioPolizas.getSelectedItemPosition() == 1;
+
+        String busquedaNormalizada =
+                normalizarTexto(valorBusqueda);
+
+        Query consulta = FirebaseFirestore.getInstance()
+                .collection("cotizaciones")
+                .whereEqualTo("usuarioUid", usuario.getUid())
+                .whereEqualTo("estado", "emitida");
+
+        if (!valorBusqueda.isEmpty() && !buscarPorAsegurado) {
+            consulta = consulta.whereEqualTo(
+                    "numeroPoliza",
+                    valorBusqueda
+            );
+        }
+
+        cambiarEstadoCarga(true);
         contenedorPolizas.removeAllViews();
         txtEstadoPolizas.setText(R.string.polizas_cargando);
 
-        FirebaseFirestore.getInstance()
-                .collection("cotizaciones")
-                .whereEqualTo("usuarioUid", usuario.getUid())
-                .whereEqualTo("estado", "emitida")
-                .get()
+        consulta.get()
                 .addOnSuccessListener(documentos -> {
                     if (isFinishing() || isDestroyed()) {
                         return;
                     }
 
+                    cambiarEstadoCarga(false);
                     contenedorPolizas.removeAllViews();
 
+                    int coincidencias = 0;
+
+                    for (QueryDocumentSnapshot documento : documentos) {
+                        String asegurado;
+
+                        if ("fisica".equals(documento.get("tipoPersona"))) {
+                            asegurado = texto(documento, "nombre")
+                                    + " "
+                                    + texto(documento, "apellido");
+                        } else {
+                            asegurado = texto(documento, "razonSocial");
+                        }
+
+                        if (buscarPorAsegurado
+                                && !busquedaNormalizada.isEmpty()
+                                && !normalizarTexto(asegurado)
+                                .contains(busquedaNormalizada)) {
+                            continue;
+                        }
+
+                        agregarTarjeta(documento);
+                        coincidencias++;
+                    }
+
                     txtEstadoPolizas.setText(
-                            documentos.isEmpty()
+                            coincidencias == 0
                                     ? getString(R.string.polizas_sin_resultados)
                                     : ""
                     );
-
-                    for (QueryDocumentSnapshot documento : documentos) {
-                        agregarTarjeta(documento);
-                    }
                 })
                 .addOnFailureListener(e -> {
-                    if (!isFinishing() && !isDestroyed()) {
-                        txtEstadoPolizas.setText(
-                                R.string.polizas_error
-                        );
+                    if (isFinishing() || isDestroyed()) {
+                        return;
                     }
+
+                    cambiarEstadoCarga(false);
+                    contenedorPolizas.removeAllViews();
+                    txtEstadoPolizas.setText(R.string.polizas_error);
                 });
     }
 
@@ -217,5 +283,26 @@ public class ConsultaPolizasActivity extends AppCompatActivity {
         }
 
         return getString(R.string.dato_no_disponible);
+    }
+
+    private void cambiarEstadoCarga(boolean cargando) {
+        spinnerCriterioPolizas.setEnabled(!cargando);
+        inputBuscarPoliza.setEnabled(!cargando);
+        btnBuscarPoliza.setEnabled(!cargando);
+        btnVerTodasPolizas.setEnabled(!cargando);
+    }
+
+    private String normalizarTexto(String texto) {
+        if (texto == null) {
+            return "";
+        }
+
+        return Normalizer.normalize(
+                        texto,
+                        Normalizer.Form.NFD
+                )
+                .replaceAll("\\p{M}+", "")
+                .toLowerCase(Locale.ROOT)
+                .trim();
     }
 }

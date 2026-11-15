@@ -28,6 +28,36 @@
                 android:textStyle="bold"
                 android:gravity="center" />
 
+            <Spinner
+                android:id="@+id/spinnerCriterioPolizas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:minHeight="@dimen/altura_minima_input"
+                android:entries="@array/polizas_criterios" />
+
+            <EditText
+                android:id="@+id/inputBuscarPoliza"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/altura_minima_input"
+                android:hint="@string/polizas_buscar_valor"
+                android:inputType="textNoSuggestions"
+                android:maxLines="1"
+                android:importantForAutofill="no" />
+
+            <Button
+                android:id="@+id/btnBuscarPoliza"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/polizas_buscar" />
+
+            <Button
+                android:id="@+id/btnVerTodasPolizas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/polizas_ver_todas" />
+
             <TextView
                 android:id="@+id/txtEstadoPolizas"
                 android:layout_width="match_parent"
