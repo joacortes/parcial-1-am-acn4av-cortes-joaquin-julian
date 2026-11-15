@@ -147,4 +147,19 @@
     <string name="estado_cotizada">Cotizada</string>
     <string name="estado_emitida">Emitida</string>
     <string name="detalle_estado">Estado: %1$s</string>
+
+    <string name="emision_boton">Emitir póliza</string>
+    <string name="emision_correcta">Póliza emitida: %1$s</string>
+    <string name="emision_error">No se pudo emitir la póliza. Comprobá la conexión y los datos de la cotización.</string>
+    <string name="emision_error_datos">La cotización necesita una vigencia desde hoy, una duración válida y una prima final válida.</string>
+
+    <string name="detalle_numero_poliza">Número de póliza: %1$s</string>
+    <string name="detalle_fin_vigencia">Fin de vigencia: %1$s</string>
+    <!-- Confirmación de emisión -->
+    <string name="emitida_titulo">Póliza emitida correctamente</string>
+    <string name="emitida_cargando">Cargando los datos de la póliza…</string>
+    <string name="emitida_error_carga">No se pudieron cargar los datos de la póliza. Podés volver a consultarla desde el inicio.</string>
+    <string name="emitida_volver_inicio">Volver al inicio</string>
+
+    <string name="emitida_datos">Número de póliza:\n%1$s\n\nAsegurado:\n%2$s\n\nVehículo:\n%3$s\nPatente: %4$s\n\nCobertura:\n%5$s\n\nVigencia:\nDesde %6$s hasta %7$s\n\nPrima final:\n%8$s</string>
 </resources>

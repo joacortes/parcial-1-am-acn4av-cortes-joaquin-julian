@@ -24,6 +24,16 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+
 public class DetalleCotizacionActivity extends AppCompatActivity {
 
     private TextView txtDetalle;
@@ -42,6 +52,9 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
 
         findViewById(R.id.btnModificarCondiciones)
                 .setOnClickListener(v -> modificarCondiciones());
+
+        findViewById(R.id.btnEmitirPoliza)
+                .setOnClickListener(v -> emitirPoliza());
 
         ViewCompat.setOnApplyWindowInsetsListener(
                 findViewById(R.id.main),
@@ -111,7 +124,11 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
                     mostrarCotizacion(documento);
                     cotizacionCargada = documento;
 
-                    findViewById(R.id.btnModificarCondiciones).setEnabled(true);
+                    boolean puedeOperar = documento.get("estado") == null || "cotizada".equals(documento.get("estado"));
+
+                    findViewById(R.id.btnModificarCondiciones).setEnabled(puedeOperar);
+
+                    findViewById(R.id.btnEmitirPoliza).setEnabled(puedeOperar);
                 })
                 .addOnFailureListener(e -> {
                     if (!isFinishing() && !isDestroyed()) {
@@ -148,6 +165,26 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
                         estadoTexto
                 )
         );
+
+        if ("emitida".equals(documento.get("estado"))) {
+            detalle.append("\n");
+
+            detalle.append(
+                    getString(
+                            R.string.detalle_numero_poliza,
+                            texto(documento, "numeroPoliza")
+                    )
+            );
+
+            detalle.append("\n");
+
+            detalle.append(
+                    getString(
+                            R.string.detalle_fin_vigencia,
+                            texto(documento, "vigenciaHasta")
+                    )
+            );
+        }
 
         detalle.append("\n\n");
 
@@ -369,5 +406,190 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
         );
 
         startActivity(intent);
+    }
+
+    private String calcularFinVigencia(DocumentSnapshot documento) {
+        Object inicioGuardado = documento.get("vigenciaDesde");
+        Object duracionGuardada = documento.get("duracionMeses");
+
+        if (!(inicioGuardado instanceof String)
+                || !(duracionGuardada instanceof Number)) {
+            return null;
+        }
+
+        String inicioTexto = (String) inicioGuardado;
+        Number duracion = (Number) duracionGuardada;
+        int meses = duracion.intValue();
+
+        if (duracion.doubleValue() != meses
+                || (meses != 1 && meses != 6 && meses != 12)) {
+            return null;
+        }
+
+        if (!inicioTexto.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}")) {
+            return null;
+        }
+
+        SimpleDateFormat formato =
+                new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
+
+        formato.setLenient(false);
+
+        try {
+            Date inicio = formato.parse(inicioTexto);
+
+            if (inicio == null) {
+                return null;
+            }
+
+            Calendar hoy = Calendar.getInstance();
+            hoy.set(Calendar.HOUR_OF_DAY, 0);
+            hoy.set(Calendar.MINUTE, 0);
+            hoy.set(Calendar.SECOND, 0);
+            hoy.set(Calendar.MILLISECOND, 0);
+
+            if (inicio.before(hoy.getTime())) {
+                return null;
+            }
+
+            Calendar fin = Calendar.getInstance();
+            fin.setTime(inicio);
+            fin.add(Calendar.MONTH, meses);
+
+            return formato.format(fin.getTime());
+
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    private void emitirPoliza() {
+        if (cotizacionCargada == null) {
+            return;
+        }
+
+        FirebaseUser usuario =
+                FirebaseAuth.getInstance().getCurrentUser();
+
+        if (usuario == null) {
+            Toast.makeText(
+                    this,
+                    R.string.error_sesion_requerida,
+                    Toast.LENGTH_LONG
+            ).show();
+            return;
+        }
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        DocumentReference referencia = db.collection("cotizaciones")
+                .document(cotizacionCargada.getId());
+
+        String usuarioUid = usuario.getUid();
+
+        findViewById(R.id.btnEmitirPoliza).setEnabled(false);
+        findViewById(R.id.btnModificarCondiciones).setEnabled(false);
+
+        db.<String>runTransaction(transaccion -> {
+            DocumentSnapshot documento = transaccion.get(referencia);
+
+            if (!documento.exists()
+                    || !usuarioUid.equals(documento.get("usuarioUid"))) {
+
+                throw new FirebaseFirestoreException(
+                        "Cotización no disponible",
+                        FirebaseFirestoreException.Code.PERMISSION_DENIED
+                );
+            }
+
+            String estado = documento.getString("estado");
+
+            if ("emitida".equals(estado)) {
+                String numeroExistente =
+                        documento.getString("numeroPoliza");
+
+                if (numeroExistente == null
+                        || numeroExistente.trim().isEmpty()) {
+
+                    throw new FirebaseFirestoreException(
+                            "La operación emitida no tiene número",
+                            FirebaseFirestoreException.Code.FAILED_PRECONDITION
+                    );
+                }
+
+                return numeroExistente;
+            }
+
+            if (estado != null && !"cotizada".equals(estado)) {
+                throw new FirebaseFirestoreException(
+                        "Estado no válido",
+                        FirebaseFirestoreException.Code.FAILED_PRECONDITION
+                );
+            }
+
+            String finVigencia = calcularFinVigencia(documento);
+            Object primaGuardada = documento.get("prima");
+
+            if (finVigencia == null
+                    || !(primaGuardada instanceof Number)
+                    || !Double.isFinite(
+                    ((Number) primaGuardada).doubleValue()
+            )
+                    || ((Number) primaGuardada).doubleValue() < 0) {
+
+                throw new FirebaseFirestoreException(
+                        getString(R.string.emision_error_datos),
+                        FirebaseFirestoreException.Code.FAILED_PRECONDITION
+                );
+            }
+
+            String numeroPoliza = "POL-" + referencia.getId();
+
+            Map<String, Object> emision = new HashMap<>();
+            emision.put("estado", "emitida");
+            emision.put("numeroPoliza", numeroPoliza);
+            emision.put("vigenciaHasta", finVigencia);
+            emision.put("fechaEmision", FieldValue.serverTimestamp());
+
+            transaccion.update(referencia, emision);
+
+            return numeroPoliza;
+
+        }).addOnSuccessListener(numeroPoliza -> {
+            if (isFinishing() || isDestroyed()) {
+                return;
+            }
+
+            Intent intent = new Intent(
+                    DetalleCotizacionActivity.this,
+                    PolizaEmitidaActivity.class
+            );
+
+            intent.putExtra(
+                    "cotizacionId",
+                    referencia.getId()
+            );
+
+            intent.setFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_CLEAR_TASK
+            );
+
+            startActivity(intent);
+            finish();
+
+        }).addOnFailureListener(e -> {
+            if (isFinishing() || isDestroyed()) {
+                return;
+            }
+
+            Toast.makeText(
+                    this,
+                    R.string.emision_error,
+                    Toast.LENGTH_LONG
+            ).show();
+
+            cargarCotizacion();
+        });
     }
 }

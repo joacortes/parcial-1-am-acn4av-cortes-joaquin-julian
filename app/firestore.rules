@@ -3,21 +3,61 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    function propietario(datos) {
+      return request.auth != null
+             && datos.usuarioUid == request.auth.uid;
+    }
+
+    function esCotizada(datos) {
+      return !('estado' in datos)
+             || datos.estado == 'cotizada';
+    }
+
+    function sinDatosEmision(datos) {
+      return !datos.keys().hasAny([
+        'numeroPoliza',
+        'vigenciaHasta',
+        'fechaEmision'
+      ]);
+    }
+
     match /cotizaciones/{cotizacionId} {
 
-      allow create: if request.auth != null
-                    && request.resource.data.usuarioUid
-                       == request.auth.uid;
+      allow read: if propietario(resource.data);
 
-      allow read, delete: if request.auth != null
-                          && resource.data.usuarioUid
-                             == request.auth.uid;
+      allow create: if propietario(request.resource.data)
+                    && request.resource.data.estado == 'cotizada'
+                    && sinDatosEmision(request.resource.data);
 
-      allow update: if request.auth != null
-                    && resource.data.usuarioUid
-                       == request.auth.uid
+      allow update: if propietario(resource.data)
                     && request.resource.data.usuarioUid
-                       == resource.data.usuarioUid;
+                       == resource.data.usuarioUid
+                    && esCotizada(resource.data)
+                    && (
+                      (
+                        esCotizada(request.resource.data)
+                        && sinDatosEmision(request.resource.data)
+                      )
+                      ||
+                      (
+                        request.resource.data.estado == 'emitida'
+                        && request.resource.data.diff(resource.data)
+                           .affectedKeys().hasOnly([
+                             'estado',
+                             'numeroPoliza',
+                             'vigenciaHasta',
+                             'fechaEmision'
+                           ])
+                        && request.resource.data.numeroPoliza
+                           == 'POL-' + cotizacionId
+                        && request.resource.data.vigenciaHasta is string
+                        && request.resource.data.fechaEmision
+                           == request.time
+                      )
+                    );
+
+      allow delete: if propietario(resource.data)
+                    && esCotizada(resource.data);
     }
   }
 }
