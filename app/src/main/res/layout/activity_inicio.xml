@@ -51,6 +51,14 @@
             android:onClick="consultarCotizaciones" />
 
         <Button
+            android:id="@+id/btnConsultarPolizas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_chico"
+            android:text="@string/inicio_polizas"
+            android:onClick="consultarPolizas" />
+
+        <Button
             android:id="@+id/btnCerrarSesion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

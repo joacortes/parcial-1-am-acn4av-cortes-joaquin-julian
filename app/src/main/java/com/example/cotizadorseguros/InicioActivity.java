@@ -68,4 +68,13 @@ public class InicioActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
+
+    public void consultarPolizas(View view) {
+        Intent intent = new Intent(
+                InicioActivity.this,
+                ConsultaPolizasActivity.class
+        );
+
+        startActivity(intent);
+    }
 }

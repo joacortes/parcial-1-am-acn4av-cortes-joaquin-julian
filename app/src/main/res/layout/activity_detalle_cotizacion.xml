@@ -26,7 +26,8 @@
                 android:text="@string/detalle_cotizacion_titulo"
                 android:textSize="@dimen/titulo_size"
                 android:textStyle="bold"
-                android:gravity="center" />
+                android:gravity="center"
+                android:id="@+id/txtTituloDetalle" />
 
             <TextView
                 android:id="@+id/txtDetalleCotizacion"

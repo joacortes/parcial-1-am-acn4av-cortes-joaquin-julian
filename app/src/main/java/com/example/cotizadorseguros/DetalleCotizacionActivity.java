@@ -33,11 +33,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import android.view.View;
+import com.google.firebase.Timestamp;
 
 public class DetalleCotizacionActivity extends AppCompatActivity {
 
     private TextView txtDetalle;
     private DocumentSnapshot cotizacionCargada;
+    private boolean modoPoliza;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,19 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detalle_cotizacion);
 
         txtDetalle = findViewById(R.id.txtDetalleCotizacion);
+
+        modoPoliza = getIntent().getBooleanExtra("modoPoliza", false);
+
+        if (modoPoliza) {
+            TextView titulo = findViewById(R.id.txtTituloDetalle);
+            titulo.setText(R.string.detalle_poliza_titulo);
+
+            findViewById(R.id.btnEmitirPoliza)
+                    .setVisibility(View.GONE);
+
+            findViewById(R.id.btnModificarCondiciones)
+                    .setVisibility(View.GONE);
+        }
 
         findViewById(R.id.btnVolverConsulta)
                 .setOnClickListener(v -> finish());
@@ -121,6 +137,15 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
                         return;
                     }
 
+                    if (modoPoliza
+                            && !"emitida".equals(documento.get("estado"))) {
+
+                        txtDetalle.setText(
+                                R.string.detalle_cotizacion_no_disponible
+                        );
+                        return;
+                    }
+
                     mostrarCotizacion(documento);
                     cotizacionCargada = documento;
 
@@ -184,6 +209,25 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
                             texto(documento, "vigenciaHasta")
                     )
             );
+
+            Timestamp fechaEmision =
+                    documento.getTimestamp("fechaEmision");
+
+            if (fechaEmision != null) {
+                SimpleDateFormat formato = new SimpleDateFormat(
+                        "dd/MM/yyyy HH:mm",
+                        new Locale("es", "AR")
+                );
+
+                detalle.append("\n");
+
+                detalle.append(
+                        getString(
+                                R.string.detalle_fecha_emision,
+                                formato.format(fechaEmision.toDate())
+                        )
+                );
+            }
         }
 
         detalle.append("\n\n");

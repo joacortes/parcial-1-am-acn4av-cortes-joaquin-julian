@@ -162,4 +162,17 @@
     <string name="emitida_volver_inicio">Volver al inicio</string>
 
     <string name="emitida_datos">Número de póliza:\n%1$s\n\nAsegurado:\n%2$s\n\nVehículo:\n%3$s\nPatente: %4$s\n\nCobertura:\n%5$s\n\nVigencia:\nDesde %6$s hasta %7$s\n\nPrima final:\n%8$s</string>
+    <!-- Consulta de pólizas -->
+    <string name="inicio_polizas">Pólizas</string>
+    <string name="polizas_titulo">Consulta de pólizas</string>
+    <string name="polizas_cargando">Cargando pólizas…</string>
+    <string name="polizas_sin_resultados">Todavía no tenés pólizas emitidas.</string>
+    <string name="polizas_error">No se pudieron cargar las pólizas. Intentá nuevamente.</string>
+    <string name="polizas_ver_detalle">Ver detalle</string>
+    <string name="polizas_volver">Volver al inicio</string>
+
+    <string name="polizas_tarjeta">Póliza: %1$s\nAsegurado: %2$s\nVehículo: %3$s %4$s\nPatente: %5$s\nCobertura: %6$s\nVigencia: %7$s a %8$s\nPrima final: %9$s</string>
+
+    <string name="detalle_poliza_titulo">Detalle de póliza</string>
+    <string name="detalle_fecha_emision">Fecha de emisión: %1$s</string>
 </resources>
