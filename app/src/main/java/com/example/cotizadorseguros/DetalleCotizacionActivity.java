@@ -132,6 +132,23 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
                 )
         );
 
+        String estadoTexto;
+
+        if ("emitida".equals(documento.get("estado"))) {
+            estadoTexto = getString(R.string.estado_emitida);
+        } else {
+            estadoTexto = getString(R.string.estado_cotizada);
+        }
+
+        detalle.append("\n");
+
+        detalle.append(
+                getString(
+                        R.string.detalle_estado,
+                        estadoTexto
+                )
+        );
+
         detalle.append("\n\n");
 
         if ("fisica".equals(documento.get("tipoPersona"))) {

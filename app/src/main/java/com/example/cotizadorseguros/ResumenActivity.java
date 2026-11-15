@@ -183,6 +183,10 @@ public class ResumenActivity extends AppCompatActivity {
 
         Map<String, Object> cotizacion = new HashMap<>();
 
+        if (!getIntent().hasExtra("cotizacionId")) {
+            cotizacion.put("estado", "cotizada");
+        }
+
         String[] camposPoliza = {
                 "vigenciaDesde",
                 "duracion",

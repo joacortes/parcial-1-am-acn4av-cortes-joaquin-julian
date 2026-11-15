@@ -143,4 +143,8 @@
 
     <string name="detalle_modificar_condiciones">Modificar condiciones</string>
     <string name="error_modificar_condiciones">Esta cotización no tiene una prima base válida para modificar sus condiciones.</string>
+
+    <string name="estado_cotizada">Cotizada</string>
+    <string name="estado_emitida">Emitida</string>
+    <string name="detalle_estado">Estado: %1$s</string>
 </resources>
