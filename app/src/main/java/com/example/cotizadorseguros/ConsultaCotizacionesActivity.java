@@ -62,6 +62,12 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
 
         FirebaseUser usuarioActual = FirebaseAuth.getInstance().getCurrentUser();
 
+        if (usuarioActual == null) {
+            Toast.makeText(this, R.string.error_sesion_requerida, Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
         String valorBusqueda = inputBuscarCotizacion.getText().toString().trim();
 
         boolean buscarPorAsegurado = spinnerCriterioBusqueda.getSelectedItemPosition() == 1;
@@ -92,25 +98,15 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
         contenedorCotizaciones.removeAllViews();
         txtEstadoConsulta.setText(R.string.consulta_cargando);
 
-        if (usuarioActual == null) {
-            Toast.makeText(this, R.string.error_sesion_requerida, Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
+
 
         consulta.get().addOnSuccessListener(queryDocumentSnapshots -> {
 
             cambiarEstadoCarga(false);
             contenedorCotizaciones.removeAllViews();
-
-            txtEstadoConsulta.setText(queryDocumentSnapshots.isEmpty()
-                    ? getString(R.string.consulta_sin_resultados)
-                    : ""
-            );
-
-            cambiarEstadoCarga(false);
-            contenedorCotizaciones.removeAllViews();
             txtEstadoConsulta.setText("");
+
+            int coincidencias = 0;
 
             int coincidencias = 0;
 
@@ -247,17 +243,17 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
                 );
 
                 txtCotizacion.setLayoutParams(parametros);
-
                 contenedorCotizaciones.addView(
                         txtCotizacion
                 );
-
-                txtEstadoConsulta.setText(
-                        coincidencias == 0
-                                ? getString(R.string.consulta_sin_resultados)
-                                : ""
-                );
             }
+
+
+            txtEstadoConsulta.setText(
+                    coincidencias == 0
+                            ? getString(R.string.consulta_sin_resultados)
+                            : ""
+            );
         })
         .addOnFailureListener(e -> {
             cambiarEstadoCarga(false);
