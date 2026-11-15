@@ -55,6 +55,14 @@
                 android:enabled="false" />
 
             <Button
+                android:id="@+id/btnModificarCobertura"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:text="@string/detalle_modificar_cobertura"
+                android:enabled="false" />
+
+            <Button
                 android:id="@+id/btnModificarCondiciones"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

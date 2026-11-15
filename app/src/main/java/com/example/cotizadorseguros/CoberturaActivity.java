@@ -83,8 +83,17 @@ public class CoberturaActivity extends AppCompatActivity {
         uso = intent.getStringExtra("uso");
 
         if (savedInstanceState != null) {
-            coberturaSeleccionada = savedInstanceState.getString("coberturaSeleccionada", "");
-            primaCalculada = savedInstanceState.getDouble("primaCalculada", 0);
+            coberturaSeleccionada = savedInstanceState.getString(
+                    "coberturaSeleccionada",
+                    ""
+            );
+        } else {
+            String coberturaGuardada =
+                    intent.getStringExtra("cobertura");
+
+            if (coberturaGuardada != null) {
+                coberturaSeleccionada = coberturaGuardada;
+            }
         }
 
         txtDatosVehiculo.setText(marca + " " + modelo + " - " + anio + " - Patente " + patente);
@@ -109,40 +118,28 @@ public class CoberturaActivity extends AppCompatActivity {
                 }
         );
 
+        recalcularPrima();
+
         if (!coberturaSeleccionada.isEmpty()) {
             mostrarCoberturaSeleccionada();
         }
     }
 
     public void seleccionarResponsabilidadCivil(View view) {
-
         coberturaSeleccionada = "Responsabilidad Civil";
-
-        double coeficiente = 0.002;
-
-        primaCalculada = sumaAsegurada * coeficiente;
-
+        recalcularPrima();
         actualizarCoberturaSeleccionada();
     }
 
     public void seleccionarTercerosCompleto(View view) {
-
         coberturaSeleccionada = "Terceros Completo";
-
-        double coeficiente = 0.0035;
-
-        primaCalculada = sumaAsegurada * coeficiente;
-
+        recalcularPrima();
         actualizarCoberturaSeleccionada();
     }
 
     public void seleccionarTodoRiesgo(View view) {
-
         coberturaSeleccionada = "Todo Riesgo";
-
-        double coeficiente = 0.006;
-        primaCalculada = sumaAsegurada * coeficiente;
-
+        recalcularPrima();
         actualizarCoberturaSeleccionada();
     }
 
@@ -199,8 +196,29 @@ public class CoberturaActivity extends AppCompatActivity {
 
     protected void onSaveInstanceState(Bundle outState) {
         outState.putString("coberturaSeleccionada", coberturaSeleccionada);
-        outState.putDouble("primaCalculada", primaCalculada);
+
 
         super.onSaveInstanceState(outState);
+    }
+
+    private void recalcularPrima() {
+        double coeficiente;
+
+        if ("Responsabilidad Civil".equals(coberturaSeleccionada)) {
+            coeficiente = 0.002;
+
+        } else if ("Terceros Completo".equals(coberturaSeleccionada)) {
+            coeficiente = 0.0035;
+
+        } else if ("Todo Riesgo".equals(coberturaSeleccionada)) {
+            coeficiente = 0.006;
+
+        } else {
+            coberturaSeleccionada = "";
+            primaCalculada = 0;
+            return;
+        }
+
+        primaCalculada = sumaAsegurada * coeficiente;
     }
 }

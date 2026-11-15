@@ -64,6 +64,7 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
                     .setVisibility(View.GONE);
 
             findViewById(R.id.btnModificarPoliza).setVisibility(View.GONE);
+            findViewById(R.id.btnModificarCobertura).setVisibility(View.GONE);
         }
 
         findViewById(R.id.btnVolverConsulta)
@@ -76,6 +77,8 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
                 .setOnClickListener(v -> emitirPoliza());
 
         findViewById(R.id.btnModificarPoliza).setOnClickListener(v -> modificarPoliza());
+
+        findViewById(R.id.btnModificarCobertura).setOnClickListener(v -> modificarCobertura());
 
         ViewCompat.setOnApplyWindowInsetsListener(
                 findViewById(R.id.main),
@@ -158,6 +161,7 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
 
                     boolean puedeOperar = documento.get("estado") == null || "cotizada".equals(documento.get("estado"));
 
+                    findViewById(R.id.btnModificarCobertura).setEnabled(puedeOperar);
                     findViewById(R.id.btnModificarCondiciones).setEnabled(puedeOperar);
 
                     findViewById(R.id.btnEmitirPoliza).setEnabled(puedeOperar);
@@ -508,6 +512,7 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
         findViewById(R.id.btnEmitirPoliza).setEnabled(false);
         findViewById(R.id.btnModificarCondiciones).setEnabled(false);
         findViewById(R.id.btnModificarPoliza).setEnabled(false);
+        findViewById(R.id.btnModificarCobertura).setEnabled(false);
 
         db.<String>runTransaction(transaccion -> {
             DocumentSnapshot documento = transaccion.get(referencia);
@@ -687,5 +692,19 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
         );
 
         return intent;
+    }
+
+    private void modificarCobertura() {
+        if (!puedeEditarCotizacion()) {
+            return;
+        }
+
+        Intent intent = crearIntentEdicion(
+                CoberturaActivity.class
+        );
+
+        if (intent != null) {
+            startActivity(intent);
+        }
     }
 }
