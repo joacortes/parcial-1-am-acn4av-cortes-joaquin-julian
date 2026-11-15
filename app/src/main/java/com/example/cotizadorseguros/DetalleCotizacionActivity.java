@@ -18,10 +18,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
+import android.content.Intent;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class DetalleCotizacionActivity extends AppCompatActivity {
 
     private TextView txtDetalle;
+    private DocumentSnapshot cotizacionCargada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,9 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
 
         findViewById(R.id.btnVolverConsulta)
                 .setOnClickListener(v -> finish());
+
+        findViewById(R.id.btnModificarCondiciones)
+                .setOnClickListener(v -> modificarCondiciones());
 
         ViewCompat.setOnApplyWindowInsetsListener(
                 findViewById(R.id.main),
@@ -100,6 +109,9 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
                     }
 
                     mostrarCotizacion(documento);
+                    cotizacionCargada = documento;
+
+                    findViewById(R.id.btnModificarCondiciones).setEnabled(true);
                 })
                 .addOnFailureListener(e -> {
                     if (!isFinishing() && !isDestroyed()) {
@@ -257,5 +269,88 @@ public class DetalleCotizacionActivity extends AppCompatActivity {
         }
 
         return getString(R.string.dato_no_disponible);
+    }
+
+    private void modificarCondiciones() {
+        if (cotizacionCargada == null) {
+            return;
+        }
+
+        Object valorBase = cotizacionCargada.get("primaBase");
+
+        if (!(valorBase instanceof Number)
+                || !Double.isFinite(((Number) valorBase).doubleValue())
+                || ((Number) valorBase).doubleValue() <= 0) {
+
+            Toast.makeText(
+                    this,
+                    R.string.error_modificar_condiciones,
+                    Toast.LENGTH_LONG
+            ).show();
+
+            return;
+        }
+
+        Map<String, Object> datos = cotizacionCargada.getData();
+
+        if (datos == null) {
+            return;
+        }
+
+        Intent intent = new Intent(
+                DetalleCotizacionActivity.this,
+                CondicionesComercialesActivity.class
+        );
+
+        for (Map.Entry<String, Object> campo : datos.entrySet()) {
+            String clave = campo.getKey();
+            Object valor = campo.getValue();
+
+            if (valor instanceof String) {
+                intent.putExtra(clave, (String) valor);
+
+            } else if (valor instanceof Number) {
+                if ("duracionMeses".equals(clave)) {
+                    intent.putExtra(
+                            clave,
+                            ((Number) valor).intValue()
+                    );
+                } else {
+                    intent.putExtra(
+                            clave,
+                            ((Number) valor).doubleValue()
+                    );
+                }
+            }
+        }
+
+        Object telefonos = datos.get("telefonosAdicionales");
+
+        if (telefonos instanceof List<?>) {
+            ArrayList<String> listaTelefonos = new ArrayList<>();
+
+            for (Object telefono : (List<?>) telefonos) {
+                if (telefono instanceof String) {
+                    listaTelefonos.add((String) telefono);
+                }
+            }
+
+            intent.putStringArrayListExtra(
+                    "telefonosAdicionales",
+                    listaTelefonos
+            );
+        }
+
+        intent.putExtra(
+                "cotizacionId",
+                cotizacionCargada.getId()
+        );
+
+        intent.putExtra(
+                "prima",
+                ((Number) valorBase).doubleValue()
+        );
+
+        startActivity(intent);
     }
 }

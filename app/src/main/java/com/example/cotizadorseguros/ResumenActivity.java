@@ -21,6 +21,7 @@ import java.util.Map;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.ArrayList;
+import com.google.firebase.firestore.SetOptions;
 
 public class ResumenActivity extends AppCompatActivity {
     private TextView txtResumenAsegurado;
@@ -74,7 +75,13 @@ public class ResumenActivity extends AppCompatActivity {
         }
 
         if (cotizacionId == null) {
-            cotizacionId = db.collection("cotizaciones").document().getId();
+            cotizacionId = getIntent().getStringExtra("cotizacionId");
+        }
+
+        if (cotizacionId == null || cotizacionId.trim().isEmpty()) {
+            cotizacionId = db.collection("cotizaciones")
+                    .document()
+                    .getId();
         }
 
         txtResumenAsegurado = findViewById(R.id.txtResumenAsegurado);
@@ -246,7 +253,7 @@ public class ResumenActivity extends AppCompatActivity {
 
         view.setEnabled(false);
 
-        db.collection("cotizaciones").document(cotizacionId).set(cotizacion).addOnSuccessListener(resultado -> {
+        db.collection("cotizaciones").document(cotizacionId).set(cotizacion, SetOptions.merge()).addOnSuccessListener(resultado -> {
                     String asegurado;
                     if ("fisica".equals(tipoPersona)) {
                         asegurado = nombre + " " + apellido;

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.math.BigDecimal;
 
 public class CondicionesComercialesActivity
         extends AppCompatActivity {
@@ -51,6 +52,19 @@ public class CondicionesComercialesActivity
         NumberFormat moneda = NumberFormat.getCurrencyInstance(new Locale("es", "AR"));
 
         txtPrimaBase.setText("Prima base: " + moneda.format(primaBase));
+
+        if (savedInstanceState == null && datosAnteriores.hasExtra("cotizacionId")) {
+            inputDescuento.setText(
+                    BigDecimal.valueOf(datosAnteriores.getDoubleExtra("descuento", 0)).toPlainString()
+            );
+
+            inputRecargo.setText(BigDecimal.valueOf(datosAnteriores.getDoubleExtra("recargo", 0)).toPlainString()
+            );
+
+            inputComision.setText(BigDecimal.valueOf(datosAnteriores.getDoubleExtra("porcentajeComision", 0)).toPlainString());
+
+            actualizarCalculo();
+        }
     }
 
     public void calcularCondiciones(View view) {

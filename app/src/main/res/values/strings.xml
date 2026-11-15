@@ -140,4 +140,7 @@
         <item>Número de cotización</item>
         <item>Asegurado</item>
     </string-array>
+
+    <string name="detalle_modificar_condiciones">Modificar condiciones</string>
+    <string name="error_modificar_condiciones">Esta cotización no tiene una prima base válida para modificar sus condiciones.</string>
 </resources>

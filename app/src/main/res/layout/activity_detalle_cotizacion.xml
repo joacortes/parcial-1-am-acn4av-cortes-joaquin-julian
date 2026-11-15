@@ -38,6 +38,14 @@
                 android:textIsSelectable="true" />
 
             <Button
+                android:id="@+id/btnModificarCondiciones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:text="@string/detalle_modificar_condiciones"
+                android:enabled="false" />
+
+            <Button
                 android:id="@+id/btnVolverConsulta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
