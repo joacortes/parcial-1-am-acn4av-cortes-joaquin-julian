@@ -28,13 +28,21 @@
                 android:textStyle="bold"
                 android:gravity="center" />
 
+            <Spinner
+                android:id="@+id/spinnerCriterioBusqueda"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:minHeight="@dimen/altura_minima_input"
+                android:entries="@array/consulta_criterios" />
+
             <EditText
                 android:id="@+id/inputBuscarCotizacion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_normal"
                 android:minHeight="@dimen/altura_minima_input"
-                android:hint="@string/consulta_buscar_numero"
+                android:hint="@string/consulta_buscar_valor"
                 android:inputType="textNoSuggestions"
                 android:maxLines="1"
                 android:importantForAutofill="no" />

@@ -18,6 +18,9 @@ import android.widget.EditText;
 
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.Query;
+import android.content.Intent;
+import android.widget.Spinner;
+import java.text.Normalizer;
 
 public class ConsultaCotizacionesActivity extends AppCompatActivity {
 
@@ -27,6 +30,7 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
     private Button btnBuscarCotizacion;
     private Button btnVerTodasCotizaciones;
     private TextView txtEstadoConsulta;
+    private Spinner spinnerCriterioBusqueda;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,7 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
             cargarCotizaciones();
         });
 
+        spinnerCriterioBusqueda = findViewById(R.id.spinnerCriterioBusqueda);
         cargarCotizaciones();
     }
 
@@ -57,9 +62,14 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
 
         FirebaseUser usuarioActual = FirebaseAuth.getInstance().getCurrentUser();
 
-        String numero = inputBuscarCotizacion.getText().toString().trim();
+        String valorBusqueda = inputBuscarCotizacion.getText().toString().trim();
 
-        if (numero.contains("/") || numero.equals(".") || numero.equals("..")) {
+        boolean buscarPorAsegurado = spinnerCriterioBusqueda.getSelectedItemPosition() == 1;
+
+        String busquedaNormalizada =
+                normalizarTexto(valorBusqueda);
+
+        if (!buscarPorAsegurado && (valorBusqueda.contains("/") || valorBusqueda.equals(".") || valorBusqueda.equals(".."))) {
 
             inputBuscarCotizacion.setError(getString(R.string.consulta_numero_invalido));
 
@@ -68,10 +78,14 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
 
         inputBuscarCotizacion.setError(null);
 
-        Query consulta = db.collection("cotizaciones").whereEqualTo("usuarioUid", usuarioActual.getUid());
+        Query consulta = db.collection("cotizaciones")
+                .whereEqualTo(
+                        "usuarioUid",
+                        usuarioActual.getUid()
+                );
 
-        if (!numero.isEmpty()) {
-            consulta = consulta.whereEqualTo(FieldPath.documentId(), numero);
+        if (!valorBusqueda.isEmpty() && !buscarPorAsegurado) {
+            consulta = consulta.whereEqualTo(FieldPath.documentId(), valorBusqueda);
         }
 
         cambiarEstadoCarga(true);
@@ -93,6 +107,12 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
                     ? getString(R.string.consulta_sin_resultados)
                     : ""
             );
+
+            cambiarEstadoCarga(false);
+            contenedorCotizaciones.removeAllViews();
+            txtEstadoConsulta.setText("");
+
+            int coincidencias = 0;
 
             for (QueryDocumentSnapshot documento : queryDocumentSnapshots) {
 
@@ -151,7 +171,34 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
                     asegurado = documento.getString("razonSocial");
                 }
 
+                if (buscarPorAsegurado && !busquedaNormalizada.isEmpty() && !normalizarTexto(asegurado).contains(busquedaNormalizada)) {
+                    continue;
+                }
+
+                coincidencias++;
+
                 TextView txtCotizacion = new TextView(this);
+                Button btnDetalle = new Button(this);
+                btnDetalle.setText(R.string.detalle_cotizacion_ver);
+
+                btnDetalle.setOnClickListener(v -> {
+                    Intent intent = new Intent(
+                            ConsultaCotizacionesActivity.this,
+                            DetalleCotizacionActivity.class
+                    );
+
+                    intent.putExtra("cotizacionId", documento.getId());
+
+                    startActivity(intent);
+                });
+
+                contenedorCotizaciones.addView(
+                        btnDetalle,
+                        new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                );
 
                 txtCotizacion.setText(getString(R.string.consulta_numero_tarjeta, documento.getId())
                         + "\n\n"
@@ -204,6 +251,12 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
                 contenedorCotizaciones.addView(
                         txtCotizacion
                 );
+
+                txtEstadoConsulta.setText(
+                        coincidencias == 0
+                                ? getString(R.string.consulta_sin_resultados)
+                                : ""
+                );
             }
         })
         .addOnFailureListener(e -> {
@@ -217,5 +270,17 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
         inputBuscarCotizacion.setEnabled(!cargando);
         btnBuscarCotizacion.setEnabled(!cargando);
         btnVerTodasCotizaciones.setEnabled(!cargando);
+        spinnerCriterioBusqueda.setEnabled(!cargando);
+    }
+
+    private String normalizarTexto(String texto) {
+        if (texto == null) {
+            return "";
+        }
+
+        return Normalizer.normalize(texto, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}+", "")
+                .toLowerCase(Locale.ROOT)
+                .trim();
     }
 }

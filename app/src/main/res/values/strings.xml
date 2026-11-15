@@ -112,4 +112,32 @@
     <string name="consulta_error">No se pudieron cargar las cotizaciones. Intentá nuevamente.</string>
     <string name="consulta_numero_invalido">Copiá el número de cotización completo, sin barras.</string>
     <string name="consulta_numero_tarjeta">Número: %1$s</string>
+
+    <!-- Detalle de cotización -->
+    <string name="detalle_cotizacion_titulo">Detalle de cotización</string>
+    <string name="detalle_cotizacion_ver">Ver detalle</string>
+    <string name="detalle_cotizacion_volver">Volver a la consulta</string>
+    <string name="detalle_cotizacion_cargando">Cargando cotización…</string>
+    <string name="detalle_cotizacion_error">No se pudo cargar la cotización. Volvé e intentá nuevamente.</string>
+    <string name="detalle_cotizacion_no_disponible">La cotización no está disponible.</string>
+
+    <string name="detalle_cotizacion_numero">NÚMERO DE COTIZACIÓN\n%1$s</string>
+
+    <string name="detalle_persona_fisica">ASEGURADO\n%1$s %2$s\nDNI: %3$s</string>
+
+    <string name="detalle_persona_juridica">ASEGURADO\nRazón social: %1$s\nCUIT: %2$s\nNombre de fantasía: %3$s</string>
+
+    <string name="detalle_contacto">CONTACTO Y DOMICILIO\nEmail: %1$s\nTeléfono: %2$s\nTeléfonos adicionales: %3$s\nDomicilio: %4$s %5$s, %6$s</string>
+
+    <string name="detalle_vehiculo">VEHÍCULO\n%1$s %2$s\nAño: %3$s\nPatente: %4$s\nUso: %5$s</string>
+
+    <string name="detalle_poliza">PÓLIZA\nInicio de vigencia: %1$s\nDuración: %2$s\nForma de pago: %3$s\nCondición impositiva: %4$s\nProductor: %5$s</string>
+
+    <string name="detalle_importes">COBERTURA Y CONDICIONES\nCobertura: %1$s\nSuma asegurada: %2$s\nPrima base: %3$s\nDescuento: %4$s\nRecargo: %5$s\nPrima final: %6$s\nComisión: %7$s\nImporte comisión: %8$s</string>
+    <string name="consulta_buscar_valor">Ingresá el valor a buscar</string>
+
+    <string-array name="consulta_criterios">
+        <item>Número de cotización</item>
+        <item>Asegurado</item>
+    </string-array>
 </resources>
