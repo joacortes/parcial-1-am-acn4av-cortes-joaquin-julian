@@ -184,4 +184,7 @@
         <item>Número de póliza</item>
         <item>Asegurado</item>
     </string-array>
+
+    <string name="detalle_modificar_poliza">Modificar datos de póliza</string>
+    <string name="error_cotizacion_no_editable">Solo se pueden modificar cotizaciones sin emitir.</string>
 </resources>

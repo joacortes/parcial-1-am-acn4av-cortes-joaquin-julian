@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.text.ParseException;
 
 public class PolizaActivity extends AppCompatActivity {
 
@@ -59,6 +60,11 @@ public class PolizaActivity extends AppCompatActivity {
             if (vigenciaMillis != -1) {
                 mostrarFecha();
             }
+        }
+
+        if (savedInstanceState == null
+                && getIntent().hasExtra("cotizacionId")) {
+            precargarPoliza();
         }
 
         inputVigencia.setOnClickListener(v -> seleccionarFecha());
@@ -148,7 +154,19 @@ public class PolizaActivity extends AppCompatActivity {
 
         SimpleDateFormat formatoDatos = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
 
-        Intent intent = new Intent(PolizaActivity.this, VehiculoActivity.class);
+        Intent intent;
+
+        if (getIntent().hasExtra("cotizacionId")) {
+            intent = new Intent(
+                    PolizaActivity.this,
+                    ResumenActivity.class
+            );
+        } else {
+            intent = new Intent(
+                    PolizaActivity.this,
+                    VehiculoActivity.class
+            );
+        }
 
         if (getIntent().getExtras() != null) {
             intent.putExtras(getIntent().getExtras());
@@ -182,5 +200,61 @@ public class PolizaActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         outState.putLong("vigenciaMillis", vigenciaMillis);
         super.onSaveInstanceState(outState);
+    }
+
+    private void precargarPoliza() {
+        String fechaGuardada =
+                getIntent().getStringExtra("vigenciaDesde");
+
+        if (fechaGuardada != null
+                && fechaGuardada.matches(
+                "[0-9]{4}-[0-9]{2}-[0-9]{2}"
+        )) {
+
+            SimpleDateFormat formato =
+                    new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
+
+            formato.setLenient(false);
+
+            try {
+                Date fecha = formato.parse(fechaGuardada);
+
+                if (fecha != null) {
+                    vigenciaMillis = fecha.getTime();
+                    mostrarFecha();
+                }
+
+            } catch (ParseException e) {
+                vigenciaMillis = -1;
+            }
+        }
+
+        seleccionarOpcion(
+                spinnerDuracion,
+                getIntent().getStringExtra("duracion")
+        );
+
+        seleccionarOpcion(
+                spinnerFormaPago,
+                getIntent().getStringExtra("formaPago")
+        );
+
+        seleccionarOpcion(
+                spinnerCondicionImpositiva,
+                getIntent().getStringExtra("condicionImpositiva")
+        );
+    }
+
+    private void seleccionarOpcion(Spinner spinner, String valor) {
+        if (valor == null) {
+            return;
+        }
+
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (valor.equals(spinner.getItemAtPosition(i).toString())) {
+                spinner.setSelection(i);
+                return;
+            }
+        }
     }
 }
