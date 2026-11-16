@@ -192,4 +192,22 @@
     <string name="detalle_modificar_vehiculo">Modificar vehículo</string>
     <string name="vehiculo_seleccionar_marca">Seleccioná una marca</string>
     <string name="vehiculo_seleccionar_modelo">Seleccioná un modelo</string>
+    <!-- Acceso e inicio -->
+    <string name="titulo_inicio_sesion">Inicio de sesión</string>
+    <string name="titulo_registro">Registro de productor</string>
+    <string name="bienvenida">Bienvenido</string>
+
+    <string name="hint_password">Contraseña</string>
+
+    <string name="btn_ingresar">Ingresar</string>
+    <string name="btn_registrarse">Registrarse</string>
+    <string name="btn_nueva_cotizacion">Nueva cotización</string>
+    <string name="btn_consultar_cotizaciones">Consultar cotizaciones</string>
+    <string name="btn_cerrar_sesion">Cerrar sesión</string>
+
+    <string name="error_credenciales_vacias">Completá email y contraseña</string>
+    <string name="login_correcto">Inicio de sesión correcto</string>
+    <string name="error_credenciales">Email o contraseña incorrectos</string>
+    <string name="registro_correcto">Usuario registrado correctamente</string>
+    <string name="error_registro">No se pudo registrar el usuario</string>
 </resources>

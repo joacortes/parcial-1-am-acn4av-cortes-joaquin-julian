@@ -108,7 +108,7 @@ public class ConsultaCotizacionesActivity extends AppCompatActivity {
 
             int coincidencias = 0;
 
-            int coincidencias = 0;
+
 
             for (QueryDocumentSnapshot documento : queryDocumentSnapshots) {
 

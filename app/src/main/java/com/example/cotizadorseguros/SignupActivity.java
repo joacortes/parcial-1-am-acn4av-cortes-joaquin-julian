@@ -32,20 +32,32 @@ public class SignupActivity extends AppCompatActivity {
         String password = inputPasswordRegistro.getText().toString();
 
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this,  "Completá email y contraseña", Toast.LENGTH_SHORT).show();
+            Toast.makeText(
+                    this,
+                    R.string.error_credenciales_vacias,
+                    Toast.LENGTH_SHORT
+            ).show();
             return;
         }
 
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(
+                                this,
+                                R.string.registro_correcto,
+                                Toast.LENGTH_SHORT
+                        ).show();
                         Intent intent = new Intent(SignupActivity.this, InicioActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                         startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(this,  "No se pudo registrar el usuario", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(
+                                this,
+                                R.string.error_registro,
+                                Toast.LENGTH_SHORT
+                        ).show();
                     }
                 });
     }

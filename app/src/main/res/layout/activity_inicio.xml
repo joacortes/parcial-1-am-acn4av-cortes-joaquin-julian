@@ -2,6 +2,7 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
@@ -21,7 +22,7 @@
             android:id="@+id/txtBienvenida"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bienvenido"
+            android:text="@string/bienvenida"
             android:textSize="26sp"
             android:textStyle="bold"
             android:gravity="center" />
@@ -30,7 +31,7 @@
             android:id="@+id/txtEmailUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="usuario@email.com"
+            tools:text="usuario@email.com"
             android:gravity="center"
             android:layout_marginTop="8dp" />
 
@@ -38,7 +39,7 @@
             android:id="@+id/btnNuevaCotizacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nueva cotización"
+            android:text="@string/btn_nueva_cotizacion"
             android:layout_marginTop="32dp"
             android:onClick="nuevaCotizacion" />
 
@@ -46,7 +47,7 @@
             android:id="@+id/btnConsultarCotizaciones"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Consultar cotizaciones"
+            android:text="@string/btn_consultar_cotizaciones"
             android:layout_marginTop="12dp"
             android:onClick="consultarCotizaciones" />
 
@@ -62,7 +63,7 @@
             android:id="@+id/btnCerrarSesion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cerrar sesión"
+            android:text="@string/btn_cerrar_sesion"
             android:layout_marginTop="12dp"
             android:onClick="cerrarSesion" />
 

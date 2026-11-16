@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Inicio de sesión"
+            android:text="@string/titulo_inicio_sesion"
             android:textSize="28sp"
             android:textStyle="bold"
             android:gravity="center"
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
-            android:hint="Email"
+            android:hint="@string/hint_email"
             android:inputType="textEmailAddress" />
 
         <EditText
@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
-            android:hint="Contraseña"
+            android:hint="@string/hint_password"
             android:inputType="textPassword"
             android:layout_marginTop="12dp" />
 
@@ -49,7 +49,7 @@
             android:id="@+id/btnIngresar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ingresar"
+            android:text="@string/btn_ingresar"
             android:layout_marginTop="24dp"
             android:onClick="loginAction" />
 
@@ -57,7 +57,7 @@
             android:id="@+id/btnRegistrarse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Registrarse"
+            android:text="@string/btn_registrarse"
             android:layout_marginTop="8dp"
             android:onClick="goToSignup" />
 
