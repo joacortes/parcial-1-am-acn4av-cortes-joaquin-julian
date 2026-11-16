@@ -28,7 +28,7 @@
                 android:id="@+id/txtTituloCobertura"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Selección de Cobertura"
+                android:text="@string/cobertura_titulo"
                 android:textSize="28sp"
                 android:textStyle="bold"
                 android:gravity="center" />
@@ -37,7 +37,7 @@
                 android:id="@+id/txtDatosVehiculo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Vehículo"
+                android:text="@string/cobertura_vehiculo"
                 android:textSize="16sp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="24dp" />
@@ -47,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginTop="16dp"
-                android:contentDescription="Imagen del vehículo"
+                android:contentDescription="@string/cobertura_imagen_vehiculo"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true" />
 
@@ -78,7 +78,7 @@
                 android:id="@+id/txtCoberturaSeleccionada"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cobertura seleccionada: ninguna"
+                android:text="@string/cobertura_sin_seleccion"
                 android:textStyle="bold"
                 android:layout_marginTop="24dp" />
 
@@ -86,7 +86,7 @@
                 android:id="@+id/btnContinuarCobertura"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Continuar"
+                android:text="@string/btn_continuar"
                 android:layout_marginTop="24dp"
                 android:onClick="continuarCobertura" />
 

@@ -138,7 +138,14 @@ public class VehiculoActivity extends AppCompatActivity {
             apellido = intent.getStringExtra("apellido");
             dni = intent.getStringExtra("dni");
 
-            txtAsegurado.setText(nombre + " " + apellido + " - DNI " + dni);
+            txtAsegurado.setText(
+                    getString(
+                            R.string.vehiculo_asegurado_fisica,
+                            nombre,
+                            apellido,
+                            dni
+                    )
+            );
         }
 
         if ("juridica".equals(tipoPersona)) {
@@ -147,7 +154,13 @@ public class VehiculoActivity extends AppCompatActivity {
             cuit = intent.getStringExtra("cuit");
             nombreFantasia = intent.getStringExtra("nombreFantasia");
 
-            txtAsegurado.setText(razonSocial + " - CUIT " + cuit);
+            txtAsegurado.setText(
+                    getString(
+                            R.string.vehiculo_asegurado_juridica,
+                            razonSocial,
+                            cuit
+                    )
+            );
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(
@@ -178,7 +191,7 @@ public class VehiculoActivity extends AppCompatActivity {
         clienteHttp.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    runOnUiThread(() -> Toast.makeText(VehiculoActivity.this, "No se pudieron cargar los modelos", Toast.LENGTH_SHORT).show());
+                    runOnUiThread(() -> Toast.makeText(VehiculoActivity.this, R.string.error_cargar_modelos, Toast.LENGTH_SHORT).show());
                 }
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
@@ -284,7 +297,7 @@ public class VehiculoActivity extends AppCompatActivity {
 
             Toast.makeText(
                     this,
-                    "Seleccioná una marca y un modelo",
+                    R.string.error_marca_modelo,
                     Toast.LENGTH_SHORT
             ).show();
 
@@ -299,7 +312,7 @@ public class VehiculoActivity extends AppCompatActivity {
         String sumaAseguradaTexto = inputSumaAsegurada.getText().toString().trim();
 
         if (patente.isEmpty() || marca.isEmpty() || modelo.isEmpty() || anio.isEmpty() || uso.isEmpty() || sumaAseguradaTexto.isEmpty()) {
-            Toast.makeText(this, "Completá todos los datos del vehículo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.error_datos_vehiculo  , Toast.LENGTH_SHORT).show();
             return;
         }
 

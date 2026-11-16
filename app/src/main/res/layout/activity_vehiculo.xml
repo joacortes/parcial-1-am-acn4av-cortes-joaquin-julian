@@ -30,7 +30,7 @@
                 android:id="@+id/txtTituloVehiculo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Datos del Vehículo"
+                android:text="@string/vehiculo_titulo"
                 android:textSize="28sp"
                 android:textStyle="bold"
                 android:gravity="center"
@@ -40,7 +40,7 @@
                 android:id="@+id/txtAsegurado"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Asegurado"
+                android:text="@string/vehiculo_asegurado"
                 android:textSize="16sp"
                 android:layout_marginBottom="24dp" />
 
@@ -49,13 +49,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
-                android:hint="Patente"
+                android:hint="@string/vehiculo_patente"
                 android:inputType="textCapCharacters" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Marca"
+                android:text="@string/vehiculo_marca"
                 android:layout_marginTop="16dp" />
 
             <Spinner
@@ -67,7 +67,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Modelo"
+                android:text="@string/vehiculo_modelo"
                 android:layout_marginTop="16dp" />
 
             <Spinner
@@ -81,7 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
-                android:hint="Año"
+                android:hint="@string/vehiculo_anio"
                 android:inputType="number"
                 android:layout_marginTop="12dp" />
 
@@ -90,7 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
-                android:hint="Suma asegurada"
+                android:hint="@string/vehiculo_suma_asegurada"
                 android:inputType="numberDecimal"
                 android:layout_marginTop="12dp" />
 
@@ -99,7 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
-                android:hint="Uso del vehículo"
+                android:hint="@string/vehiculo_uso"
                 android:inputType="textCapWords"
                 android:layout_marginTop="12dp" />
 
@@ -107,7 +107,7 @@
                 android:id="@+id/btnContinuarVehiculo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Continuar"
+                android:text="@string/btn_continuar"
                 android:layout_marginTop="24dp"
                 android:onClick="continuarVehiculo" />
 

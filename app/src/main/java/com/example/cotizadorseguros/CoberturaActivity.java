@@ -14,6 +14,8 @@ import androidx.core.view.WindowInsetsCompat;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class CoberturaActivity extends AppCompatActivity {
 
@@ -96,7 +98,15 @@ public class CoberturaActivity extends AppCompatActivity {
             }
         }
 
-        txtDatosVehiculo.setText(marca + " " + modelo + " - " + anio + " - Patente " + patente);
+        txtDatosVehiculo.setText(
+                getString(
+                        R.string.cobertura_datos_vehiculo,
+                        marca,
+                        modelo,
+                        anio,
+                        patente
+                )
+        );
 
         ViewCompat.setOnApplyWindowInsetsListener(
                 findViewById(R.id.main),
@@ -144,18 +154,28 @@ public class CoberturaActivity extends AppCompatActivity {
     }
 
     private void mostrarCoberturaSeleccionada() {
-        txtCoberturaSeleccionada.setText("Cobertura seleccionada: " + coberturaSeleccionada + "\nPrima calculada: $" + primaCalculada);
+        NumberFormat moneda = NumberFormat.getCurrencyInstance(
+                new Locale("es", "AR")
+        );
+
+        txtCoberturaSeleccionada.setText(
+                getString(
+                        R.string.cobertura_seleccionada,
+                        coberturaSeleccionada,
+                        moneda.format(primaCalculada)
+                )
+        );
     }
 
     private void actualizarCoberturaSeleccionada() {
         mostrarCoberturaSeleccionada();
 
-        Toast.makeText(this, "Cobertura seleccionada correctamente", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.cobertura_seleccion_correcta, Toast.LENGTH_SHORT).show();
     }
 
     public void continuarCobertura(View view) {
         if (coberturaSeleccionada.isEmpty()) {
-            Toast.makeText(this, "Seleccioná una cobertura", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.error_cobertura_requerida, Toast.LENGTH_SHORT).show();
             return;
         }
 

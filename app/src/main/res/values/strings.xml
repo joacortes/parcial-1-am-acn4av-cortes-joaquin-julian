@@ -210,4 +210,32 @@
     <string name="error_credenciales">Email o contraseña incorrectos</string>
     <string name="registro_correcto">Usuario registrado correctamente</string>
     <string name="error_registro">No se pudo registrar el usuario</string>
+
+    <!-- Vehículo -->
+    <string name="vehiculo_titulo">Datos del Vehículo</string>
+    <string name="vehiculo_asegurado">Asegurado</string>
+    <string name="vehiculo_patente">Patente</string>
+    <string name="vehiculo_marca">Marca</string>
+    <string name="vehiculo_modelo">Modelo</string>
+    <string name="vehiculo_anio">Año</string>
+    <string name="vehiculo_suma_asegurada">Suma asegurada</string>
+    <string name="vehiculo_uso">Uso del vehículo</string>
+
+    <string name="vehiculo_asegurado_fisica">%1$s %2$s - DNI %3$s</string>
+    <string name="vehiculo_asegurado_juridica">%1$s - CUIT %2$s</string>
+
+    <string name="error_cargar_modelos">No se pudieron cargar los modelos</string>
+    <string name="error_marca_modelo">Seleccioná una marca y un modelo</string>
+    <string name="error_datos_vehiculo">Completá todos los datos del vehículo</string>
+
+    <!-- Cobertura -->
+    <string name="cobertura_titulo">Selección de Cobertura</string>
+    <string name="cobertura_vehiculo">Vehículo</string>
+    <string name="cobertura_imagen_vehiculo">Imagen del vehículo</string>
+    <string name="cobertura_sin_seleccion">Cobertura seleccionada: ninguna</string>
+
+    <string name="cobertura_datos_vehiculo">%1$s %2$s - %3$s - Patente %4$s</string>
+    <string name="cobertura_seleccionada">Cobertura seleccionada: %1$s\nPrima calculada: %2$s</string>
+    <string name="cobertura_seleccion_correcta">Cobertura seleccionada correctamente</string>
+    <string name="error_cobertura_requerida">Seleccioná una cobertura</string>
 </resources>
